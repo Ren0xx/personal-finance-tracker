@@ -1,32 +1,13 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
     provider = "prisma-client-js"
 }
 
 datasource db {
     provider = "postgresql"
-    // NOTE: When using mysql or sqlserver, uncomment the @db.Text annotations in model Account below
-    // Further reading:
-    // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
-    // https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#string
     url      = env("DATABASE_URL")
 }
 
-model Post {
-    id        Int      @id @default(autoincrement())
-    name      String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
-    createdBy   User   @relation(fields: [createdById], references: [id])
-    createdById String
-
-    @@index([name])
-}
-
-// Necessary for Next auth
+// Model użytkownika oraz jego konta i sesje (wymagane przez NextAuth)
 model Account {
     id                       String  @id @default(cuid())
     userId                   String
@@ -55,14 +36,17 @@ model Session {
 }
 
 model User {
-    id            String    @id @default(cuid())
+    id            String        @id @default(cuid())
     name          String?
-    email         String?   @unique
+    email         String?       @unique
     emailVerified DateTime?
     image         String?
     accounts      Account[]
     sessions      Session[]
-    posts         Post[]
+    transactions  Transaction[]
+    budgets       Budget[]
+    savingsGoals  SavingsGoal[]
+    Category      Category[]
 }
 
 model VerificationToken {
@@ -71,4 +55,47 @@ model VerificationToken {
     expires    DateTime
 
     @@unique([identifier, token])
+}
+
+// Modele finansowe
+
+model Transaction {
+    id          String   @id @default(cuid())
+    userId      String
+    categoryId  String
+    amount      Decimal  @db.Decimal(10, 2)
+    description String?
+    date        DateTime @default(now())
+    user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    category    Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+}
+
+model Category {
+    id           String        @id @default(cuid())
+    name         String
+    userId       String
+    user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+    transactions Transaction[]
+    budgets      Budget[]
+}
+
+model Budget {
+    id         String   @id @default(cuid())
+    userId     String
+    categoryId String
+    amount     Decimal  @db.Decimal(10, 2)
+    startDate  DateTime
+    endDate    DateTime
+    user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+}
+
+model SavingsGoal {
+    id            String    @id @default(cuid())
+    userId        String
+    name          String
+    targetAmount  Decimal   @db.Decimal(10, 2)
+    currentAmount Decimal   @default(0) @db.Decimal(10, 2)
+    deadline      DateTime?
+    user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
