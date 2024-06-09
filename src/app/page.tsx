@@ -1,27 +1,8 @@
 "use client";
-import Link from "next/link";
 
-import { useSession } from "next-auth/react";
-import { ThemeToggle } from "@/components/ThemeToggle";
-import NotLoggedIn from "@/components/NotLoggedIn";
-import { Button } from "@/components/ui/button";
-import { signOut } from "next-auth/react";
+import { H1 } from "@/components/ui/typography";
 
-export default function Home() {
-  const { status } = useSession();
-
-  if (status === "loading") {
-    return <div>Loading</div>;
-  }
-  if (status === "unauthenticated") {
-    return <NotLoggedIn />;
-  }
-  return (
-    <div>
-      <ThemeToggle />
-      <h1>hello</h1>
-      <Button onClick={() => signOut()}>Log out</Button>
-      <Link href="/dashboard">Dashboard</Link>
-    </div>
-  );
+export default function Dashboard() {
+  
+  return <div><H1>Dashboard</H1></div>;
 }
