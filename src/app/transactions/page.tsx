@@ -1,5 +1,5 @@
 import { H1 } from "@/components/ui/typography";
-import { AddTransactionForm } from "./_components/AddTransactionForm";
+import { AddTransactionForm } from "../../components/forms/AddTransactionForm";
 export default function Transactions() {
   return (
     <div>
