@@ -37,6 +37,11 @@ const formSchema = z.object({
 
 export function AddTransactionForm() {
   const { data: allCategories } = api.category.getAll.useQuery(undefined, {});
+  const { data: allTransactions } = api.transaction.getAll.useQuery(
+    undefined,
+    {},
+  );
+  const createOne = api.transaction.createOne.useMutation({});
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -47,11 +52,23 @@ export function AddTransactionForm() {
     },
   });
 
+  const addOne = async (
+    amount: number,
+    categoryId: string,
+    description: string,
+  ) => {
+    await createOne.mutateAsync({
+      amount,
+      categoryId,
+      description,
+    });
+  };
   // Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    const { amount, categoryId, description } = values;
+    void addOne(parseFloat(amount), categoryId, description ?? "");
     console.log(values);
-  }
+  };
 
   return (
     <Form {...form}>
