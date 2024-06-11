@@ -18,6 +18,9 @@ const SideNav = () => {
       <Link href="/billings">
         <H4>Billings</H4>
       </Link>
+      <Link href="/categories">
+        <H4>Categories</H4>
+      </Link>
       <Button onClick={() => signOut()}>Log out</Button>
     </div>
   );
