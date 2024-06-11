@@ -29,9 +29,16 @@ const formSchema = z.object({
     message: "Name must have atleast 3 characters.",
   }),
 });
-const AddCategoryForm = () => {
+type AddCategoryFormProps = {
+  isRefetching: boolean;
+  refetch: () => void;
+};
+const AddCategoryForm = (props: AddCategoryFormProps) => {
+  const { isRefetching, refetch } = props;
   const [open, setOpen] = useState<boolean>(false);
-  const createOne = api.category.createOne.useMutation({});
+  const createOne = api.category.createOne.useMutation({
+    onSuccess: () => refetch(),
+  });
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -74,7 +81,9 @@ const AddCategoryForm = () => {
                 </FormItem>
               )}
             />
-            <Button type="submit">Submit</Button>
+            <Button type="submit" disabled={isRefetching}>
+              Submit
+            </Button>
           </form>
         </Form>
       </DialogContent>

@@ -17,7 +17,7 @@ export default function Categories() {
   return (
     <div className="flex flex-col gap-2">
       <H1>Categories</H1>
-      <AddCategoryForm />
+      <AddCategoryForm isRefetching={isRefetching} refetch={refetch} />
       <RemoveCategoryForm
         categories={categories!}
         refetch={refetch}
