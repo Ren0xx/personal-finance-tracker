@@ -3,20 +3,20 @@ import { useSession } from "next-auth/react";
 const useTransactions = () => {
   const session = useSession();
   const {
-    data: transactions,
+    data: categories,
     refetch,
     isRefetching,
-    isLoading,
     isError,
-  } = api.transaction.getAll.useQuery(undefined, {
+    isLoading,
+  } = api.category.getAll.useQuery(undefined, {
     enabled: session !== undefined,
   });
   return {
-    transactions,
+    categories,
     refetch,
     isRefetching,
-    isLoading,
     isError,
+    isLoading,
   };
 };
 

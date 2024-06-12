@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import useCategories from "@/hooks/useCategories";
 import {
   Select,
   SelectContent,
@@ -41,11 +42,14 @@ const formSchema = z.object({
 });
 
 export function AddTransactionForm() {
-  const { data: allCategories } = api.category.getAll.useQuery(undefined, {});
-  const { refetch, isRefetching } = useTransactions();
+  const {
+    refetch: refetchTransactions,
+    isRefetching: isRefetchingTransactions,
+  } = useTransactions();
+  const { categories } = useCategories();
   const createOne = api.transaction.createOne.useMutation({
     onSuccess: () => {
-      void refetch();
+      void refetchTransactions();
     },
   });
 
@@ -93,7 +97,7 @@ export function AddTransactionForm() {
                   <SelectContent>
                     <SelectGroup>
                       <SelectLabel>Choose category</SelectLabel>
-                      {allCategories?.map((category) => (
+                      {categories?.map((category) => (
                         <SelectItem key={category.id} value={category.id}>
                           {category.name}
                         </SelectItem>
@@ -133,7 +137,9 @@ export function AddTransactionForm() {
           )}
         />
 
-        <Button type="submit" disabled={isRefetching}>Submit</Button>
+        <Button type="submit" disabled={isRefetchingTransactions}>
+          Submit
+        </Button>
       </form>
     </Form>
   );

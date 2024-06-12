@@ -21,6 +21,9 @@ const SideNav = () => {
       <Link href="/categories">
         <H4>Categories</H4>
       </Link>
+      <Link href="/saving-goals">
+        <H4>Saving Goals</H4>
+      </Link>
       <Button onClick={() => signOut()}>Log out</Button>
     </div>
   );

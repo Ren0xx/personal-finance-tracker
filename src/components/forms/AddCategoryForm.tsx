@@ -2,10 +2,12 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { api } from "@/trpc/react";
+import { type RouterOutputs } from "@/trpc/react";
+type Category = RouterOutputs["category"]["getAll"][0];
 import {
   Dialog,
   DialogContent,
@@ -24,21 +26,36 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-const formSchema = z.object({
-  name: z.string().min(3, {
-    message: "Name must have atleast 3 characters.",
-  }),
-});
+const createFormSchema = (existingCategories: Category[]) =>
+  z.object({
+    name: z
+      .string()
+      .min(3, {
+        message: "Name must have at least 3 characters.",
+      })
+      .refine(
+        (name) =>
+          !existingCategories.some(
+            (category) => category.name.toLowerCase() === name.toLowerCase(),
+          ),
+        { message: "Category already exists." },
+      ),
+  });
 type AddCategoryFormProps = {
+  categories: Category[];
   isRefetching: boolean;
   refetch: () => void;
 };
 const AddCategoryForm = (props: AddCategoryFormProps) => {
-  const { isRefetching, refetch } = props;
+  const { categories, isRefetching, refetch } = props;
   const [open, setOpen] = useState<boolean>(false);
+
   const createOne = api.category.createOne.useMutation({
     onSuccess: () => refetch(),
   });
+
+  const formSchema = useMemo(() => createFormSchema(categories), [categories]);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
