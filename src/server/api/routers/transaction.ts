@@ -27,6 +27,9 @@ export const transactionRouter = createTRPCRouter({
     }),
 
   getAll: protectedProcedure.query(({ ctx }) => {
-    return ctx.db.transaction.findMany({ include: { category: true } });
+    return ctx.db.transaction.findMany({
+      where: { userId: ctx.session.user.id },
+      include: { category: true },
+    });
   }),
 });

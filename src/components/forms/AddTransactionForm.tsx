@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { api } from "@/trpc/react";
+import useTransactions from "@/hooks/useTransactions";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -29,19 +30,24 @@ const formSchema = z.object({
   categoryId: z.string().min(1, {
     message: "Category is required.",
   }),
-  amount: z.string().regex(/^\d+(\.\d{1,2})?$/, {
-    message: "Amount must be a valid number with up to two decimal places.",
-  }),
+  amount: z
+    .string()
+    .regex(/^\d+(\.\d{1,2})?$/, {
+      message: "Amount must be a valid number with up to two decimal places.",
+    })
+    .min(1, { message: "Amount cannot be empty." })
+    .max(10000000, { message: "Amount cannot be larger than 10 milion." }),
   description: z.string().optional(),
 });
 
 export function AddTransactionForm() {
   const { data: allCategories } = api.category.getAll.useQuery(undefined, {});
-  const { data: allTransactions } = api.transaction.getAll.useQuery(
-    undefined,
-    {},
-  );
-  const createOne = api.transaction.createOne.useMutation({});
+  const { refetch, isRefetching } = useTransactions();
+  const createOne = api.transaction.createOne.useMutation({
+    onSuccess: () => {
+      void refetch();
+    },
+  });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -127,7 +133,7 @@ export function AddTransactionForm() {
           )}
         />
 
-        <Button type="submit">Submit</Button>
+        <Button type="submit" disabled={isRefetching}>Submit</Button>
       </form>
     </Form>
   );

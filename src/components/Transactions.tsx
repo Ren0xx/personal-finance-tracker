@@ -1,8 +1,8 @@
 "use client";
-import { api } from "@/trpc/react";
 import { H4 } from "@/components/ui/typography";
+import useTransactions from "@/hooks/useTransactions";
 const TransactionsList = () => {
-  const { data: transactions } = api.transaction.getAll.useQuery(undefined, {});
+  const { transactions } = useTransactions();
   return (
     <div>
       {transactions?.map((transaction) => {
