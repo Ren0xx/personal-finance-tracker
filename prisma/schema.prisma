@@ -71,23 +71,34 @@ model Transaction {
 }
 
 model Category {
-    id           String        @id @default(cuid())
+    id           String           @id @default(cuid())
     name         String
     userId       String
-    user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+    user         User             @relation(fields: [userId], references: [id], onDelete: Cascade)
     transactions Transaction[]
-    budgets      Budget[]
+    budgets      BudgetCategory[]
 }
 
 model Budget {
-    id         String   @id @default(cuid())
-    userId     String
+    id          String           @id @default(cuid())
+    name        String
+    description String?
+    userId      String
+    categoryId  String
+    amount      Decimal          @db.Decimal(10, 2)
+    startDate   DateTime
+    endDate     DateTime
+    user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+    categories  BudgetCategory[]
+}
+
+model BudgetCategory {
+    budgetId   String
     categoryId String
-    amount     Decimal  @db.Decimal(10, 2)
-    startDate  DateTime
-    endDate    DateTime
-    user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-    category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+    budget     Budget   @relation(fields: [budgetId], references: [id])
+    category   Category @relation(fields: [categoryId], references: [id])
+
+    @@id([budgetId, categoryId])
 }
 
 model SavingsGoal {
