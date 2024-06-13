@@ -1,6 +1,6 @@
 import { api } from "@/trpc/react";
 import { useSession } from "next-auth/react";
-const useTransactions = () => {
+const useCategories = () => {
   const session = useSession();
   const {
     data: categories,
@@ -20,4 +20,4 @@ const useTransactions = () => {
   };
 };
 
-export default useTransactions;
+export default useCategories;

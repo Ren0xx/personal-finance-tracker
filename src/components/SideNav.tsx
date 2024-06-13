@@ -15,8 +15,8 @@ const SideNav = () => {
       <Link href="/transactions">
         <H4>Transactions</H4>
       </Link>
-      <Link href="/billings">
-        <H4>Billings</H4>
+      <Link href="/budget">
+        <H4>Budget</H4>
       </Link>
       <Link href="/categories">
         <H4>Categories</H4>

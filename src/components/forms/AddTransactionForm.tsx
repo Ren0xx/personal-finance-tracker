@@ -57,7 +57,7 @@ export function AddTransactionForm() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       categoryId: "",
-      amount: "",
+      amount: "100",
       description: "",
     },
   });
@@ -117,7 +117,7 @@ export function AddTransactionForm() {
             <FormItem>
               <FormLabel>Amount</FormLabel>
               <FormControl>
-                <Input placeholder="100.00" {...field} />
+                <Input type="number" placeholder="Amount" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

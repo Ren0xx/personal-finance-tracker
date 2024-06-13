@@ -33,6 +33,9 @@ export const budgetRouter = createTRPCRouter({
     }),
 
   getAll: protectedProcedure.query(({ ctx }) => {
-    return ctx.db.budget.findMany({ where: { userId: ctx.session.user.id } });
+    return ctx.db.budget.findMany({
+      where: { userId: ctx.session.user.id },
+      include: { categories: true },
+    });
   }),
 });
