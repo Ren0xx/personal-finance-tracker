@@ -24,17 +24,16 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { DatePicker } from "@/components/DatePickers/DatePicker";
-import useCategories from "@/hooks/useCategories";
-
+import useSavingsGoals from "@/hooks/useSavingsGoals";
 import { type z } from "zod";
 import { api } from "@/trpc/react";
 
 const AddSavingGoal = () => {
-  const { categories } = useCategories();
   const [open, setOpen] = useState(false);
+  const { refetchSavingsGoals, isRefetchingSavingsGoals } = useSavingsGoals();
 
   const createOne = api.savingsGoal.createOne.useMutation({
-    //onSuccess: () => refetchBudgets(),
+    onSuccess: () => refetchSavingsGoals(),
   });
 
   const form = useForm<z.infer<typeof createSavingsGoalSchema>>({
@@ -46,9 +45,27 @@ const AddSavingGoal = () => {
       currentAmount: "0",
     },
   });
-
+  const addOne = async (
+    name: string,
+    targetAmount: number,
+    deadline: Date,
+    currentAmount: number | undefined,
+  ) => {
+    await createOne.mutateAsync({
+      name,
+      targetAmount,
+      deadline,
+      currentAmount,
+    });
+  };
   const onSubmit = async (values: z.infer<typeof createSavingsGoalSchema>) => {
-    // Implement your API call here
+    const { name, targetAmount, deadline, currentAmount } = values;
+    void addOne(
+      name,
+      parseFloat(targetAmount),
+      deadline,
+      currentAmount ? parseFloat(currentAmount) : undefined,
+    );
     console.log(values);
     setOpen(false);
   };
@@ -130,7 +147,9 @@ const AddSavingGoal = () => {
               )}
             />
 
-            <Button type="submit">Submit</Button>
+            <Button type="submit" disabled={isRefetchingSavingsGoals}>
+              Submit
+            </Button>
           </form>
         </Form>
       </DialogContent>

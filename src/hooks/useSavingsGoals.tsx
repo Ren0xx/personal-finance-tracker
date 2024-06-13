@@ -3,18 +3,18 @@ import { useSession } from "next-auth/react";
 const useSavingsGoals = () => {
   const session = useSession();
   const {
-    data: savingGoals,
-    refetch: refetchSavingGoals,
-    isRefetching: isRefetchingSavingGoals,
+    data: savingsGoals,
+    refetch: refetchSavingsGoals,
+    isRefetching: isRefetchingSavingsGoals,
     isError,
     isLoading,
-  } = api.category.getAll.useQuery(undefined, {
+  } = api.savingsGoal.getAll.useQuery(undefined, {
     enabled: session !== undefined,
   });
   return {
-    savingGoals,
-    refetchSavingGoals,
-    isRefetchingSavingGoals,
+    savingsGoals,
+    refetchSavingsGoals,
+    isRefetchingSavingsGoals,
     isError,
     isLoading,
   };
