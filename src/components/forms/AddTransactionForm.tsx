@@ -2,7 +2,8 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { createTransactionSchema } from "@/schemas/transaction";
+import { type z } from "zod";
 import { api } from "@/trpc/react";
 import useTransactions from "@/hooks/useTransactions";
 import { Button } from "@/components/ui/button";
@@ -27,20 +28,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const formSchema = z.object({
-  categoryId: z.string().min(1, {
-    message: "Category is required.",
-  }),
-  amount: z
-    .string()
-    .regex(/^\d+(\.\d{1,2})?$/, {
-      message: "Amount must be a valid number with up to two decimal places.",
-    })
-    .min(1, { message: "Amount cannot be empty." })
-    .max(10000000, { message: "Amount cannot be larger than 10 milion." }),
-  description: z.string().optional(),
-});
-
 export function AddTransactionForm() {
   const {
     refetch: refetchTransactions,
@@ -53,8 +40,8 @@ export function AddTransactionForm() {
     },
   });
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof createTransactionSchema>>({
+    resolver: zodResolver(createTransactionSchema),
     defaultValues: {
       categoryId: "",
       amount: "100",
@@ -73,11 +60,9 @@ export function AddTransactionForm() {
       description,
     });
   };
-  // Define a submit handler.
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: z.infer<typeof createTransactionSchema>) => {
     const { amount, categoryId, description } = values;
     void addOne(parseFloat(amount), categoryId, description ?? "");
-    console.log(values);
   };
 
   return (

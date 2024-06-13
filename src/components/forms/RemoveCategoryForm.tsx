@@ -2,11 +2,13 @@
 
 import { type RouterOutputs } from "@/trpc/react";
 type Category = RouterOutputs["category"]["getAll"][0];
+
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { deleteCategorySchema } from "@/schemas/category";
 import { useForm } from "react-hook-form";
 import { api } from "@/trpc/react";
-import { z } from "zod";
+import { type z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -34,12 +36,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const formSchema = z.object({
-  categoryId: z.string().min(1, {
-    message: "Category is required.",
-  }),
-});
-
 type RemoveCategoryProps = {
   categories: Category[];
   isRefetching: boolean;
@@ -56,8 +52,8 @@ const RemoveCategoryForm = (props: RemoveCategoryProps) => {
   });
   const { categories, refetch, isRefetching } = props;
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof deleteCategorySchema>>({
+    resolver: zodResolver(deleteCategorySchema),
     defaultValues: {
       categoryId: "",
     },
@@ -67,7 +63,7 @@ const RemoveCategoryForm = (props: RemoveCategoryProps) => {
     await deleteOne.mutateAsync({ id });
   };
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSubmit(values: z.infer<typeof deleteCategorySchema>) {
     setSelectedCategory(values.categoryId);
     setConfirmOpen(true);
   }

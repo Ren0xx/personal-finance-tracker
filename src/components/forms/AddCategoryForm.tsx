@@ -2,8 +2,9 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { createCategorySchema } from "@/schemas/category";
 import { useState, useMemo } from "react";
-import { z } from "zod";
+import { type z } from "zod";
 import { Button } from "@/components/ui/button";
 import { api } from "@/trpc/react";
 import { type RouterOutputs } from "@/trpc/react";
@@ -26,21 +27,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-const createFormSchema = (existingCategories: Category[]) =>
-  z.object({
-    name: z
-      .string()
-      .min(3, {
-        message: "Name must have at least 3 characters.",
-      })
-      .refine(
-        (name) =>
-          !existingCategories.some(
-            (category) => category.name.toLowerCase() === name.toLowerCase(),
-          ),
-        { message: "Category already exists." },
-      ),
-  });
 type AddCategoryFormProps = {
   categories: Category[];
   isRefetching: boolean;
@@ -54,7 +40,10 @@ const AddCategoryForm = (props: AddCategoryFormProps) => {
     onSuccess: () => refetch(),
   });
 
-  const formSchema = useMemo(() => createFormSchema(categories), [categories]);
+  const formSchema = useMemo(
+    () => createCategorySchema(categories),
+    [categories],
+  );
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
