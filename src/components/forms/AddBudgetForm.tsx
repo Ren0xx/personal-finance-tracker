@@ -34,7 +34,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { type z } from "zod";
-import { DatePickerWithRange } from "@/app/budget/_components/DatePickerWithRange";
+import { DatePickerWithRange } from "@/components/DatePickers/DatePickerWithRange";
 
 const AddBudgetForm = () => {
   const { categories } = useCategories();

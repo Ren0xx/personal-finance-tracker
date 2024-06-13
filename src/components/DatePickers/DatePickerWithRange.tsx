@@ -11,7 +11,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-interface DatePickerWithRangeProps {
+type DatePickerWithRangeProps ={
   from: Date;
   to: Date;
   onChange: () => void;
