@@ -7,7 +7,6 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-// Model użytkownika oraz jego konta i sesje (wymagane przez NextAuth)
 model Account {
     id                       String  @id @default(cuid())
     userId                   String
@@ -57,7 +56,6 @@ model VerificationToken {
     @@unique([identifier, token])
 }
 
-// Modele finansowe
 
 model Transaction {
     id          String   @id @default(cuid())

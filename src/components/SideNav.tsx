@@ -4,27 +4,22 @@ import { signOut } from "next-auth/react";
 import { H4 } from "@/components/ui/typography";
 import Link from "next/link";
 import { ThemeToggle } from "@/components/ThemeToggle";
-
+import { hrefs } from "@/utils/navigation";
 const SideNav = () => {
   return (
     <div className="flex flex-col gap-4">
       <ThemeToggle />
-      <Link href="/">
-        <H4>Dashboard</H4>
-      </Link>
-      <Link href="/transactions">
-        <H4>Transactions</H4>
-      </Link>
-      <Link href="/budget">
-        <H4>Budget</H4>
-      </Link>
-      <Link href="/categories">
-        <H4>Categories</H4>
-      </Link>
-      <Link href="/savings-goals">
-        <H4>Saving Goals</H4>
-      </Link>
-      <Button onClick={() => signOut()}>Log out</Button>
+      <div className="flex flex-col gap-8">
+        {hrefs.map((href) => {
+          return (
+            <Link key={href.name} href={href.href} className="flex gap-2">
+              {href.icon}
+              <H4>{href.name}</H4>
+            </Link>
+          );
+        })}
+        <Button onClick={() => signOut()}>Log out</Button>
+      </div>
     </div>
   );
 };
