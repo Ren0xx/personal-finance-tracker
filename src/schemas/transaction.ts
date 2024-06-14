@@ -13,3 +13,8 @@ export const createTransactionSchema = z.object({
     .max(10000000, { message: "Amount cannot be larger than 10 milion." }),
   description: z.string().optional(),
 });
+export const deleteTransactionSchema = z.object({
+  transactionId: z.string().min(1, {
+    message: "Transaction is required.",
+  }),
+});

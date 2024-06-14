@@ -4,8 +4,8 @@ const useTransactions = () => {
   const session = useSession();
   const {
     data: transactions,
-    refetch,
-    isRefetching,
+    refetch: refetchTransactions,
+    isRefetching: isRefetchingTransactions,
     isLoading,
     isError,
   } = api.transaction.getAll.useQuery(undefined, {
@@ -13,8 +13,8 @@ const useTransactions = () => {
   });
   return {
     transactions,
-    refetch,
-    isRefetching,
+    refetchTransactions,
+    isRefetchingTransactions,
     isLoading,
     isError,
   };

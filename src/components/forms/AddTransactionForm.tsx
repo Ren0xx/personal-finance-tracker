@@ -29,10 +29,7 @@ import {
 } from "@/components/ui/select";
 
 export function AddTransactionForm() {
-  const {
-    refetch: refetchTransactions,
-    isRefetching: isRefetchingTransactions,
-  } = useTransactions();
+  const { refetchTransactions, isRefetchingTransactions } = useTransactions();
   const { categories } = useCategories();
   const createOne = api.transaction.createOne.useMutation({
     onSuccess: () => {

@@ -1,7 +1,7 @@
 "use client";
 
 import { api } from "@/trpc/react";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { createBudgetSchema } from "@/schemas/budget";
@@ -38,15 +38,17 @@ import { DatePickerWithRange } from "@/components/DatePickers/DatePickerWithRang
 
 const AddBudgetForm = () => {
   const { categories } = useCategories();
-  const { refetchBudgets, isRefetchingBudgets } = useBudgets();
+  const { budgets, refetchBudgets, isRefetchingBudgets } = useBudgets();
   const [open, setOpen] = useState(false);
 
   const createOne = api.budget.createOne.useMutation({
     onSuccess: () => refetchBudgets(),
   });
 
-  const form = useForm<z.infer<typeof createBudgetSchema>>({
-    resolver: zodResolver(createBudgetSchema),
+  const formSchema = useMemo(() => createBudgetSchema(budgets!), [budgets]);
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
       description: "",
@@ -59,7 +61,7 @@ const AddBudgetForm = () => {
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof createBudgetSchema>) => {
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
     createOne.mutate({
       name: values.name,
       description: values.description,

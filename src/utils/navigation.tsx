@@ -14,12 +14,12 @@ export const hrefs: {
   { name: "Dashboard", href: "/", icon: <LayoutDashboard /> },
   {
     name: "Transactions",
-    href: "/transaction",
+    href: "/transactions",
     icon: <ArrowRightLeft />,
   },
   {
-    name: "Budget",
-    href: "/budget",
+    name: "Budgets",
+    href: "/budgets",
     icon: <HandCoins />,
   },
   { name: "Categories", href: "/categories", icon: <PieChart /> },

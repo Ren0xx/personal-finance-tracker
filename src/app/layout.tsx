@@ -1,7 +1,6 @@
 import "@/styles/globals.css";
 
 import { ThemeProvider } from "@/components/theme-provider";
-import { GeistSans } from "geist/font/sans";
 import { TRPCReactProvider } from "@/trpc/react";
 import SessionWrapper from "@/components/SessionWrapper";
 import SideNav from "@/components/SideNav";
@@ -23,7 +22,6 @@ export default async function RootLayout({
     <SessionWrapper>
       <html
         lang="en"
-        //className={`${GeistSans.variable}`}
         suppressHydrationWarning
       >
         <body className="container">

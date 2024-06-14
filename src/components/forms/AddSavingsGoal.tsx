@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { createSavingsGoalSchema } from "@/schemas/savingsGoal";
@@ -30,14 +30,20 @@ import { api } from "@/trpc/react";
 
 const AddSavingGoal = () => {
   const [open, setOpen] = useState(false);
-  const { refetchSavingsGoals, isRefetchingSavingsGoals } = useSavingsGoals();
+  const { savingsGoals, refetchSavingsGoals, isRefetchingSavingsGoals } =
+    useSavingsGoals();
 
   const createOne = api.savingsGoal.createOne.useMutation({
     onSuccess: () => refetchSavingsGoals(),
   });
 
-  const form = useForm<z.infer<typeof createSavingsGoalSchema>>({
-    resolver: zodResolver(createSavingsGoalSchema),
+  const formSchema = useMemo(
+    () => createSavingsGoalSchema(savingsGoals!),
+    [savingsGoals],
+  );
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
       targetAmount: "100",
@@ -58,7 +64,7 @@ const AddSavingGoal = () => {
       currentAmount,
     });
   };
-  const onSubmit = async (values: z.infer<typeof createSavingsGoalSchema>) => {
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const { name, targetAmount, deadline, currentAmount } = values;
     void addOne(
       name,
@@ -66,7 +72,6 @@ const AddSavingGoal = () => {
       deadline,
       currentAmount ? parseFloat(currentAmount) : undefined,
     );
-    console.log(values);
     setOpen(false);
   };
 
@@ -77,7 +82,7 @@ const AddSavingGoal = () => {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Add New Savings Goald</DialogTitle>
+          <DialogTitle>Add New Savings Goal</DialogTitle>
           <DialogDescription>
             Please enter the details of the new savings goal.
           </DialogDescription>
