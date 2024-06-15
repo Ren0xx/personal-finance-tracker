@@ -117,12 +117,7 @@ const RemoveSavingsGoalForm = () => {
                   </FormItem>
                 )}
               />
-              <Button
-                type="submit"
-                disabled={
-                  isRefetchingSavingsGoals 
-                }
-              >
+              <Button type="submit" disabled={isRefetchingSavingsGoals}>
                 Delete
               </Button>
             </form>

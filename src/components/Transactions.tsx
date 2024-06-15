@@ -1,18 +1,20 @@
 "use client";
 import { H4 } from "@/components/ui/typography";
 import useTransactions from "@/hooks/useTransactions";
+import { DataTable } from "@/app/transactions/_components/transactionTable/data-table";
+import { columns } from "@/app/transactions/_components/transactionTable/columns";
 const TransactionsList = () => {
-  const { transactions } = useTransactions();
+  const { transactions, isLoading, isError } = useTransactions();
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+  if (isError) {
+    return <div>Error..</div>;
+  }
   return (
-    <div>
-      {transactions?.map((transaction) => {
-        return (
-          <div key={transaction.id}>
-            <H4>{transaction.amount.toString()}</H4>
-            <H4>{transaction.id}</H4>
-          </div>
-        );
-      })}
+    <div className="container mx-auto py-10">
+      <DataTable columns={columns} data={transactions!} />
     </div>
   );
 };
