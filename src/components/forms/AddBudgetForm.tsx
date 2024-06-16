@@ -1,6 +1,5 @@
 "use client";
 
-import { api } from "@/trpc/react";
 import { useState, useMemo } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -24,8 +23,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import useCategories from "@/hooks/useCategories";
-import useBudgets from "@/hooks/useBudgets";
+import useCategories from "@/hooks/GET/useCategories";
+import useBudgets from "@/hooks/GET/useBudgets";
+import useAddBudget from "@/hooks/POST/useAddBudget";
 import {
   Select,
   SelectContent,
@@ -39,11 +39,10 @@ import { DatePickerWithRange } from "@/components/DatePickers/DatePickerWithRang
 const AddBudgetForm = () => {
   const { categories } = useCategories();
   const { budgets, refetchBudgets, isRefetchingBudgets } = useBudgets();
-  const [open, setOpen] = useState(false);
 
-  const createOne = api.budget.createOne.useMutation({
-    onSuccess: () => refetchBudgets(),
-  });
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
+  const { addBudget } = useAddBudget(refetchBudgets);
+  const [open, setOpen] = useState(false);
 
   const formSchema = useMemo(() => createBudgetSchema(budgets!), [budgets]);
 
@@ -62,11 +61,11 @@ const AddBudgetForm = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    createOne.mutate({
+    await addBudget({
       name: values.name,
+      amount: parseFloat(values.amount),
       description: values.description,
       categoryId: values.categoryId,
-      amount: parseFloat(values.amount),
       startDate: values.dateRange.from,
       endDate: values.dateRange.to,
     });

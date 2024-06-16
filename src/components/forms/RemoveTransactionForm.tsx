@@ -31,8 +31,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import useTransactions from "@/hooks/useTransactions";
-import useDeleteTransaction from "@/hooks/useDeleteTransaction";
+import useTransactions from "@/hooks/GET/useTransactions";
+import useDeleteTransaction from "@/hooks/DELETE/useDeleteTransaction";
 
 const RemoveTransactionForm = () => {
   const { transactions } = useTransactions();

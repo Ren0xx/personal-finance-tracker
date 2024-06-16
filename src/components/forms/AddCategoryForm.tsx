@@ -6,7 +6,6 @@ import { createCategorySchema } from "@/schemas/category";
 import { useState, useMemo } from "react";
 import { type z } from "zod";
 import { Button } from "@/components/ui/button";
-import { api } from "@/trpc/react";
 import { type RouterOutputs } from "@/trpc/react";
 type Category = RouterOutputs["category"]["getAll"][0];
 import {
@@ -26,6 +25,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import useAddCategory from "@/hooks/POST/useAddCategory";
 
 type AddCategoryFormProps = {
   categories: Category[];
@@ -34,11 +34,8 @@ type AddCategoryFormProps = {
 };
 const AddCategoryForm = (props: AddCategoryFormProps) => {
   const { categories, isRefetching, refetch } = props;
+  const { addCategory } = useAddCategory(refetch);
   const [open, setOpen] = useState<boolean>(false);
-
-  const createOne = api.category.createOne.useMutation({
-    onSuccess: () => refetch(),
-  });
 
   const formSchema = useMemo(
     () => createCategorySchema(categories),
@@ -51,12 +48,9 @@ const AddCategoryForm = (props: AddCategoryFormProps) => {
       name: "",
     },
   });
-  const addOne = async (name: string) => {
-    await createOne.mutateAsync({ name });
-  };
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    void addOne(values.name);
+    await addCategory(values.name);
     setOpen(false);
   }
 

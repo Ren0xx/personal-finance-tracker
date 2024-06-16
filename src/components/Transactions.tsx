@@ -1,6 +1,5 @@
 "use client";
-import { H4 } from "@/components/ui/typography";
-import useTransactions from "@/hooks/useTransactions";
+import useTransactions from "@/hooks/GET/useTransactions";
 import { DataTable } from "@/app/transactions/_components/transactionTable/data-table";
 import { columns } from "@/app/transactions/_components/transactionTable/columns";
 const TransactionsList = () => {

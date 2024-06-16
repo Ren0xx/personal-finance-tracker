@@ -4,8 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { createTransactionSchema } from "@/schemas/transaction";
 import { type z } from "zod";
-import { api } from "@/trpc/react";
-import useTransactions from "@/hooks/useTransactions";
+import useTransactions from "@/hooks/GET/useTransactions";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -17,7 +16,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import useCategories from "@/hooks/useCategories";
+import useCategories from "@/hooks/GET/useCategories";
 import {
   Select,
   SelectContent,
@@ -27,15 +26,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
+import useAddTransaction from "@/hooks/POST/useAddTransaction";
 export function AddTransactionForm() {
   const { refetchTransactions, isRefetchingTransactions } = useTransactions();
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
+  const { addTransaction } = useAddTransaction(refetchTransactions);
   const { categories } = useCategories();
-  const createOne = api.transaction.createOne.useMutation({
-    onSuccess: () => {
-      void refetchTransactions();
-    },
-  });
 
   const form = useForm<z.infer<typeof createTransactionSchema>>({
     resolver: zodResolver(createTransactionSchema),
@@ -46,20 +42,9 @@ export function AddTransactionForm() {
     },
   });
 
-  const addOne = async (
-    amount: number,
-    categoryId: string,
-    description: string,
-  ) => {
-    await createOne.mutateAsync({
-      amount,
-      categoryId,
-      description,
-    });
-  };
   const onSubmit = async (values: z.infer<typeof createTransactionSchema>) => {
     const { amount, categoryId, description } = values;
-    void addOne(parseFloat(amount), categoryId, description ?? "");
+    await addTransaction(categoryId, parseFloat(amount), description);
   };
 
   return (

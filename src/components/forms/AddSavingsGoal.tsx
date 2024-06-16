@@ -1,9 +1,11 @@
 "use client";
 
+import { type z } from "zod";
 import { useMemo, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { createSavingsGoalSchema } from "@/schemas/savingsGoal";
+
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -24,19 +26,17 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { DatePicker } from "@/components/DatePickers/DatePicker";
-import useSavingsGoals from "@/hooks/useSavingsGoals";
-import { type z } from "zod";
-import { api } from "@/trpc/react";
+
+import useSavingsGoals from "@/hooks/GET/useSavingsGoals";
+import useAddSavingsGoal from "@/hooks/POST/useAddSavingsGoal";
 
 const AddSavingGoal = () => {
   const [open, setOpen] = useState(false);
   const { savingsGoals, refetchSavingsGoals, isRefetchingSavingsGoals } =
     useSavingsGoals();
 
-  const createOne = api.savingsGoal.createOne.useMutation({
-    onSuccess: () => refetchSavingsGoals(),
-  });
-
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
+  const { addSavingsGoal } = useAddSavingsGoal(refetchSavingsGoals);
   const formSchema = useMemo(
     () => createSavingsGoalSchema(savingsGoals!),
     [savingsGoals],
@@ -51,22 +51,10 @@ const AddSavingGoal = () => {
       currentAmount: "0",
     },
   });
-  const addOne = async (
-    name: string,
-    targetAmount: number,
-    deadline: Date,
-    currentAmount: number | undefined,
-  ) => {
-    await createOne.mutateAsync({
-      name,
-      targetAmount,
-      deadline,
-      currentAmount,
-    });
-  };
+ 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const { name, targetAmount, deadline, currentAmount } = values;
-    void addOne(
+    await addSavingsGoal(
       name,
       parseFloat(targetAmount),
       deadline,

@@ -4,7 +4,6 @@ import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { deleteBudgetSchema } from "@/schemas/budget";
 import { useForm } from "react-hook-form";
-import { api } from "@/trpc/react";
 import { type z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
@@ -32,13 +31,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import useBudgets from "@/hooks/useBudgets";
+import useBudgets from "@/hooks/GET/useBudgets";
+import useDeleteBudget from "@/hooks/DELETE/useDeleteBudget";
 
 const RemoveBudgetForm = () => {
-  const deleteOne = api.budget.deleteOne.useMutation({
-    onSuccess: () => refetchBudgets(),
-  });
   const { budgets, refetchBudgets, isRefetchingBudgets } = useBudgets();
+
+// eslint-disable-next-line @typescript-eslint/no-misused-promises
+const { removeBudget } = useDeleteBudget(refetchBudgets);
 
   const form = useForm<z.infer<typeof deleteBudgetSchema>>({
     resolver: zodResolver(deleteBudgetSchema),
@@ -46,10 +46,8 @@ const RemoveBudgetForm = () => {
       budgetId: "",
     },
   });
+  
 
-  const removeOne = async (id: string) => {
-    await deleteOne.mutateAsync({ id });
-  };
   const [open, setOpen] = useState<boolean>(false);
   const [confirmOpen, setConfirmOpen] = useState<boolean>(false);
   const [selectedBudget, setSelectedBudget] = useState<string>(
@@ -61,9 +59,9 @@ const RemoveBudgetForm = () => {
     setConfirmOpen(true);
   }
 
-  function handleConfirmDelete() {
+  async function handleConfirmDelete() {
     if (selectedBudget) {
-      void removeOne(selectedBudget);
+      await removeBudget(selectedBudget);
     }
     setConfirmOpen(false);
     setOpen(false);

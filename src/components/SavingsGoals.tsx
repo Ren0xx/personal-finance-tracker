@@ -1,6 +1,6 @@
 "use client";
 
-import useSavingsGoals from "@/hooks/useSavingsGoals";
+import useSavingsGoals from "@/hooks/GET/useSavingsGoals";
 import { H4 } from "@/components/ui/typography";
 const SavingsGoalsList = () => {
   const { savingsGoals } = useSavingsGoals();

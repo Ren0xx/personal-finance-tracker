@@ -1,13 +1,12 @@
 "use client";
 
 import { type RouterOutputs } from "@/trpc/react";
-type Category = RouterOutputs["category"]["getAll"][0];
+type Category = RouterOutputs["savingsGoal"]["getAll"][0];
 
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { deleteCategorySchema } from "@/schemas/category";
 import { useForm } from "react-hook-form";
-import { api } from "@/trpc/react";
 import { type z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
@@ -41,17 +40,15 @@ type RemoveCategoryProps = {
   isRefetching: boolean;
   refetch: () => void;
 };
+import useDeleteCategory from "@/hooks/DELETE/useDeleteCategory";
 
 const RemoveCategoryForm = (props: RemoveCategoryProps) => {
   const [open, setOpen] = useState<boolean>(false);
   const [confirmOpen, setConfirmOpen] = useState<boolean>(false);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
-  const deleteOne = api.category.deleteOne.useMutation({
-    onSuccess: () => refetch(),
-  });
   const { categories, refetch, isRefetching } = props;
-
+  const { removeCategory } = useDeleteCategory(refetch);
   const form = useForm<z.infer<typeof deleteCategorySchema>>({
     resolver: zodResolver(deleteCategorySchema),
     defaultValues: {
@@ -59,18 +56,14 @@ const RemoveCategoryForm = (props: RemoveCategoryProps) => {
     },
   });
 
-  const removeOne = async (id: string) => {
-    await deleteOne.mutateAsync({ id });
-  };
-
   function onSubmit(values: z.infer<typeof deleteCategorySchema>) {
     setSelectedCategory(values.categoryId);
     setConfirmOpen(true);
   }
 
-  function handleConfirmDelete() {
+  async function handleConfirmDelete() {
     if (selectedCategory) {
-      void removeOne(selectedCategory);
+      await removeCategory(selectedCategory);
     }
     setConfirmOpen(false);
     setOpen(false);

@@ -4,7 +4,6 @@ import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { deleteSavingsGoalSchema } from "@/schemas/savingsGoal";
 import { useForm } from "react-hook-form";
-import { api } from "@/trpc/react";
 import { type z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
@@ -32,18 +31,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import useSavingsGoals from "@/hooks/useSavingsGoals";
+import useSavingsGoals from "@/hooks/GET/useSavingsGoals";
+import useDeleteSavingsGoal from "@/hooks/DELETE/useDeleteSavingsGoal";
 
 const RemoveSavingsGoalForm = () => {
   const { savingsGoals, refetchSavingsGoals, isRefetchingSavingsGoals } =
     useSavingsGoals();
 
-  const deleteOne = api.savingsGoal.deleteOne.useMutation({
-    onSuccess: () => refetchSavingsGoals(),
-  });
-  const removeOne = async (id: string) => {
-    await deleteOne.mutateAsync({ id });
-  };
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
+  const { removeSavingsGoal } = useDeleteSavingsGoal(refetchSavingsGoals);
+
   const form = useForm<z.infer<typeof deleteSavingsGoalSchema>>({
     resolver: zodResolver(deleteSavingsGoalSchema),
     defaultValues: {
@@ -61,9 +58,9 @@ const RemoveSavingsGoalForm = () => {
     setConfirmOpen(true);
   }
 
-  function handleConfirmDelete() {
+  async function handleConfirmDelete() {
     if (selectedSavingsGoal) {
-      void removeOne(selectedSavingsGoal);
+      await removeSavingsGoal(selectedSavingsGoal);
     }
     setConfirmOpen(false);
     setOpen(false);
