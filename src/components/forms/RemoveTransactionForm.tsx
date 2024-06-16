@@ -4,7 +4,6 @@ import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { deleteTransactionSchema } from "@/schemas/transaction";
 import { useForm } from "react-hook-form";
-import { api } from "@/trpc/react";
 import { type z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
@@ -33,15 +32,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import useTransactions from "@/hooks/useTransactions";
+import useDeleteTransaction from "@/hooks/useDeleteTransaction";
+
 const RemoveTransactionForm = () => {
-  const { transactions, refetchTransactions, isRefetchingTransactions } =
-    useTransactions();
-  const deleteOne = api.transaction.deleteOne.useMutation({
-    onSuccess: () => refetchTransactions(),
-  });
-  const removeOne = async (id: string) => {
-    await deleteOne.mutateAsync({ id });
-  };
+  const { transactions } = useTransactions();
+  const { removeTransaction, isRefetchingTransactions } =
+    useDeleteTransaction();
+
   const form = useForm<z.infer<typeof deleteTransactionSchema>>({
     resolver: zodResolver(deleteTransactionSchema),
     defaultValues: {
@@ -59,9 +56,9 @@ const RemoveTransactionForm = () => {
     setConfirmOpen(true);
   }
 
-  function handleConfirmDelete() {
+  async function handleConfirmDelete() {
     if (selectedTransaction) {
-      void removeOne(selectedTransaction);
+      await removeTransaction(selectedTransaction);
     }
     setConfirmOpen(false);
     setOpen(false);

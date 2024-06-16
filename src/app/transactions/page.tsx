@@ -6,9 +6,9 @@ export default function Transactions() {
   return (
     <div>
       <H1>Transactions</H1>
+      <TransactionsList />
       <AddTransactionForm />
       <RemoveTransactionForm />
-      <TransactionsList />
     </div>
   );
 }
