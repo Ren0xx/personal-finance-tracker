@@ -1,8 +1,8 @@
 "use client";
 import { api } from "@/trpc/react";
-const useAddSavingsGoal = (refetch: () => void) => {
+const useAddSavingsGoal = (onSuccess: () => void) => {
   const createOne = api.savingsGoal.createOne.useMutation({
-    onSuccess: () => refetch(),
+    onSuccess: () => onSuccess(),
   });
   const addSavingsGoal = async (
     name: string,

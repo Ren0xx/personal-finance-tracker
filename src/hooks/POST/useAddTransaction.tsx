@@ -1,8 +1,8 @@
 "use client";
 import { api } from "@/trpc/react";
-const useAddTransaction = (refetch: () => void) => {
+const useAddTransaction = (onSuccess: () => void) => {
   const createOne = api.transaction.createOne.useMutation({
-    onSuccess: () => refetch(),
+    onSuccess: () => onSuccess(),
   });
   const addTransaction = async (
     categoryId: string,

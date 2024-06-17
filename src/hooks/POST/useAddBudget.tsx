@@ -2,9 +2,9 @@
 import { api, type RouterInputs } from "@/trpc/react";
 type AddBudget = RouterInputs["budget"]["createOne"];
 
-const useAddBudget = (refetch: () => void) => {
+const useAddBudget = (onSuccess: () => void) => {
   const createOne = api.budget.createOne.useMutation({
-    onSuccess: () => refetch(),
+    onSuccess: () => onSuccess(),
   });
   const addBudget = async ({ ...data }: AddBudget) => {
     await createOne.mutateAsync({ ...data });

@@ -35,9 +35,10 @@ import useTransactions from "@/hooks/GET/useTransactions";
 import useDeleteTransaction from "@/hooks/DELETE/useDeleteTransaction";
 
 const RemoveTransactionForm = () => {
-  const { transactions } = useTransactions();
-  const { removeTransaction, isRefetchingTransactions } =
-    useDeleteTransaction();
+  const { transactions, refetchTransactions, isRefetchingTransactions } =
+    useTransactions();
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
+  const { removeTransaction } = useDeleteTransaction(refetchTransactions);
 
   const form = useForm<z.infer<typeof deleteTransactionSchema>>({
     resolver: zodResolver(deleteTransactionSchema),

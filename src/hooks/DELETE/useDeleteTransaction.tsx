@@ -1,15 +1,13 @@
 "use client";
 import { api } from "@/trpc/react";
-import useTransactions from "@/hooks/GET/useTransactions";
-const useDeleteTransaction = () => {
-  const { refetchTransactions, isRefetchingTransactions } = useTransactions();
+const useDeleteTransaction = (onSuccess: () => void) => {
   const deleteOne = api.transaction.deleteOne.useMutation({
-    onSuccess: () => refetchTransactions(),
+    onSuccess: () => onSuccess(),
   });
   const removeTransaction = async (id: string) => {
     await deleteOne.mutateAsync({ id });
   };
-  return { removeTransaction, isRefetchingTransactions };
+  return { removeTransaction };
 };
 
 export default useDeleteTransaction;

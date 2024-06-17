@@ -1,9 +1,9 @@
 "use client";
 import { api } from "@/trpc/react";
 
-const useDeleteBudget = (refetch: () => void) => {
+const useDeleteBudget = (onSuccess: () => void) => {
   const deleteOne = api.budget.deleteOne.useMutation({
-    onSuccess: () => refetch(),
+    onSuccess: () => onSuccess(),
   });
   const removeBudget = async (id: string) => {
     await deleteOne.mutateAsync({ id });

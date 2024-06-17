@@ -1,9 +1,9 @@
 "use client";
 import { api } from "@/trpc/react";
 
-const useDeleteCategory = (refetch: () => void) => {
+const useDeleteCategory = (onSuccess: () => void) => {
   const deleteOne = api.category.deleteOne.useMutation({
-    onSuccess: () => refetch(),
+    onSuccess: () => onSuccess(),
   });
   const removeCategory = async (id: string) => {
     await deleteOne.mutateAsync({ id });

@@ -1,9 +1,9 @@
 "use client";
 import { api } from "@/trpc/react";
 
-const useDeleteSavingsGoal = (refetch: () => void) => {
+const useDeleteSavingsGoal = (onSuccess: () => void) => {
   const deleteOne = api.savingsGoal.deleteOne.useMutation({
-    onSuccess: () => refetch(),
+    onSuccess: () => onSuccess(),
   });
   const removeSavingsGoal = async (id: string) => {
     await deleteOne.mutateAsync({ id });
