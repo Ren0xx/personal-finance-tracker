@@ -2,13 +2,26 @@
 import { type RouterOutputs } from "@/trpc/react";
 export type Transaction = RouterOutputs["transaction"]["getAll"][0];
 import { type ColumnDef } from "@tanstack/react-table";
+import { ArrowUpDown } from "lucide-react";
 
 import { format } from "date-fns";
-import Dropdown from "./actionsMenuDropdown";
+import { ActionsMenuDropdown } from "./resusable";
+import { Button } from "@/components/ui/button";
 export const columns: ColumnDef<Transaction>[] = [
   {
     accessorKey: "amount",
-    header: () => <div className="text-left">Amount</div>,
+    sortingFn: "alphanumeric",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Amount
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
     cell: ({ row }) => {
       const amount = parseFloat(row.getValue("amount"));
       const formatted = new Intl.NumberFormat("en-US", {
@@ -28,7 +41,17 @@ export const columns: ColumnDef<Transaction>[] = [
   },
   {
     accessorKey: "date",
-    header: () => <div className="text-left">Date</div>,
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Date
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
     cell: ({ row }) => {
       const date = new Date(row.getValue("date"));
       const formatted = format(date, "PPP");
@@ -37,6 +60,7 @@ export const columns: ColumnDef<Transaction>[] = [
   },
   {
     accessorKey: "category.name",
+    id: "category",
     header: () => <div className="text-left">Category</div>,
     cell: ({ row }) => {
       const categoryName = row.original.category.name;
@@ -47,7 +71,7 @@ export const columns: ColumnDef<Transaction>[] = [
     id: "actions",
     cell: ({ row }) => {
       const transaction = row.original;
-      return <Dropdown transactionId={transaction.id} />;
+      return <ActionsMenuDropdown transactionId={transaction.id} />;
     },
   },
 ];
