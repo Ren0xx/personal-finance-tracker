@@ -27,7 +27,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import useAddTransaction from "@/hooks/POST/useAddTransaction";
-export function AddTransactionForm() {
+const AddTransactionForm =() => {
   const { refetchTransactions, isRefetchingTransactions } = useTransactions();
   // eslint-disable-next-line @typescript-eslint/no-misused-promises
   const { addTransaction } = useAddTransaction(refetchTransactions);
@@ -111,3 +111,4 @@ export function AddTransactionForm() {
     </Form>
   );
 }
+export default AddTransactionForm;

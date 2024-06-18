@@ -1,14 +1,21 @@
 import { H1 } from "@/components/ui/typography";
-import { AddTransactionForm } from "../../components/forms/AddTransactionForm";
+import { lazy, Suspense } from "react";
 import TransactionsList from "@/components/Transactions";
-import RemoveTransactionForm from "@/components/forms/RemoveTransactionForm";
+const RemoveTransactionForm = lazy(
+  () => import("@/components/forms/RemoveTransactionForm"),
+);
+const AddTransactionForm = lazy(
+  () => import("@/components/forms/AddTransactionForm"),
+);
 export default function Transactions() {
   return (
     <div>
       <H1>Transactions</H1>
       <TransactionsList />
-      <AddTransactionForm />
-      <RemoveTransactionForm />
+      <Suspense fallback={<div>Loading...</div>}>
+        <AddTransactionForm />
+        <RemoveTransactionForm />
+      </Suspense>
     </div>
   );
 }

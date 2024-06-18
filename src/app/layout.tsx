@@ -1,5 +1,5 @@
 import "@/styles/globals.css";
-
+import { memo } from "react";
 import { ThemeProvider } from "@/components/theme-provider";
 import { TRPCReactProvider } from "@/trpc/react";
 import SessionWrapper from "@/components/SessionWrapper";
@@ -12,12 +12,16 @@ export const metadata = {
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
+const MemoizedSideNav = memo(SideNav);
+const MemoizedNotLoggedIn = memo(NotLoggedIn);
+
 export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   const authSession = await getServerAuthSession();
+
   return (
     <SessionWrapper>
       <html lang="en" suppressHydrationWarning>
@@ -31,14 +35,12 @@ export default async function RootLayout({
             <TRPCReactProvider>
               {!authSession ? (
                 <>
-                  <NotLoggedIn />
+                  <MemoizedNotLoggedIn />
                 </>
               ) : (
                 <div className="container">
                   <div className="grid grid-cols-6 gap-4">
-                    <div className="col-span-1">
-                      <SideNav />
-                    </div>
+                    <MemoizedSideNav />
                     <div className="col-span-5">{children}</div>
                   </div>
                 </div>

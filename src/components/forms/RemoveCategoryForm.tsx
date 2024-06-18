@@ -1,7 +1,7 @@
 "use client";
 
 import { type RouterOutputs } from "@/trpc/react";
-type Category = RouterOutputs["savingsGoal"]["getAll"][0];
+type Category = RouterOutputs["category"]["getAll"][0];
 
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";

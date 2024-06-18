@@ -7,7 +7,7 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { hrefs } from "@/utils/navigation";
 const SideNav = () => {
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 col-span-1">
       <ThemeToggle />
       <div className="flex flex-col gap-8">
         {hrefs.map((href) => {
