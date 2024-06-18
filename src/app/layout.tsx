@@ -20,11 +20,8 @@ export default async function RootLayout({
   const authSession = await getServerAuthSession();
   return (
     <SessionWrapper>
-      <html
-        lang="en"
-        suppressHydrationWarning
-      >
-        <body className="container">
+      <html lang="en" suppressHydrationWarning>
+        <body>
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
@@ -37,7 +34,7 @@ export default async function RootLayout({
                   <NotLoggedIn />
                 </>
               ) : (
-                <div className="min-h-screen min-w-full">
+                <div className="container">
                   <div className="grid grid-cols-6 gap-4">
                     <div className="col-span-1">
                       <SideNav />
