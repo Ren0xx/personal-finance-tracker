@@ -1,5 +1,6 @@
 import {
   ArrowRightLeft,
+  CircleUserRound,
   HandCoins,
   LayoutDashboard,
   PieChart,
@@ -27,5 +28,10 @@ export const hrefs: {
     name: "Savings Goals",
     href: "/savings-goals",
     icon: <WalletMinimal />,
+  },
+  {
+    name: " Profile",
+    href: "/profile",
+    icon: <CircleUserRound />,
   },
 ];

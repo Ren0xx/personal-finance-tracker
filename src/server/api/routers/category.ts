@@ -18,4 +18,10 @@ export const categoryRouter = createTRPCRouter({
   getAll: protectedProcedure.query(({ ctx }) => {
     return ctx.db.category.findMany({ where: { userId: ctx.session.user.id } });
   }),
+
+  getOne: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .query(({ ctx, input }) => {
+      return ctx.db.category.findUnique({ where: { id: input.id } });
+    }),
 });

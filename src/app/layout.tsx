@@ -33,18 +33,18 @@ export default async function RootLayout({
             disableTransitionOnChange
           >
             <TRPCReactProvider>
-              {!authSession ? (
-                <>
-                  <MemoizedNotLoggedIn />
-                </>
-              ) : (
-                <div className="container">
+              <div className="container">
+                {!authSession ? (
+                  <>
+                    <MemoizedNotLoggedIn />
+                  </>
+                ) : (
                   <div className="grid grid-cols-6 gap-4">
                     <MemoizedSideNav />
                     <div className="col-span-5">{children}</div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
             </TRPCReactProvider>
           </ThemeProvider>
         </body>

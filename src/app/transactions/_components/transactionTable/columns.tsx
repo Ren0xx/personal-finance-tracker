@@ -7,6 +7,7 @@ import { ArrowUpDown } from "lucide-react";
 import { format } from "date-fns";
 import { ActionsMenuDropdown } from "./resusable";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 export const columns: ColumnDef<Transaction>[] = [
   {
     accessorKey: "amount",
@@ -64,7 +65,13 @@ export const columns: ColumnDef<Transaction>[] = [
     header: () => <div className="text-left">Category</div>,
     cell: ({ row }) => {
       const categoryName = row.original.category.name;
-      return <div className="text-left">{categoryName}</div>;
+      return (
+        <div className="text-left">
+          <Link href={`/categories/${row.original.category.id}`}>
+            {categoryName}
+          </Link>
+        </div>
+      );
     },
   },
   {

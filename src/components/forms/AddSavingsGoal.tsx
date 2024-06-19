@@ -25,7 +25,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { DatePicker } from "@/components/DatePickers/DatePicker";
+import { DatePicker } from "@/components/datepickers/DatePicker";
 
 import useSavingsGoals from "@/hooks/GET/useSavingsGoals";
 import useAddSavingsGoal from "@/hooks/POST/useAddSavingsGoal";
@@ -51,7 +51,7 @@ const AddSavingGoal = () => {
       currentAmount: "0",
     },
   });
- 
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const { name, targetAmount, deadline, currentAmount } = values;
     await addSavingsGoal(
