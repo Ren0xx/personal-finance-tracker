@@ -78,7 +78,12 @@ export const columns: ColumnDef<Transaction>[] = [
     id: "actions",
     cell: ({ row }) => {
       const transaction = row.original;
-      return <ActionsMenuDropdown transactionId={transaction.id} />;
+      return (
+        <ActionsMenuDropdown
+          transactionId={transaction.id}
+          categoryId={transaction.categoryId}
+        />
+      );
     },
   },
 ];

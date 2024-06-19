@@ -1,10 +1,19 @@
 "use client";
-import useTransactions from "@/hooks/GET/useTransactions";
+import { type RouterOutputs } from "@/trpc/react";
+type Transaction = RouterOutputs["transaction"]["getAll"][0];
+
 import { DataTable } from "@/app/transactions/_components/transactionTable/data-table";
 import { DataTableSkeleton } from "@/components/skeletons/DataTableTransactionsSkeleton";
 import { columns } from "@/app/transactions/_components/transactionTable/columns";
-const TransactionsList = () => {
-  const { transactions, isLoading, isError } = useTransactions();
+
+type TransactionsListProps = {
+  transactions: Transaction[];
+  isLoading: boolean;
+  isError: boolean;
+  filteringHidden?: boolean;
+};
+const TransactionsList = (props: TransactionsListProps) => {
+  const { transactions, isLoading, isError, filteringHidden } = props;
 
   if (isLoading) {
     return (
@@ -18,7 +27,11 @@ const TransactionsList = () => {
   }
   return (
     <div className="container mx-auto py-10">
-      <DataTable columns={columns} data={transactions!} />
+      <DataTable
+        columns={columns}
+        data={transactions}
+        filteringHidden={filteringHidden}
+      />
     </div>
   );
 };

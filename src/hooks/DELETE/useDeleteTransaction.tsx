@@ -1,8 +1,10 @@
 "use client";
 import { api } from "@/trpc/react";
-const useDeleteTransaction = (onSuccess: () => void) => {
+const useDeleteTransaction = (onSuccessCallbacks: Array<() => void>) => {
   const deleteOne = api.transaction.deleteOne.useMutation({
-    onSuccess: () => onSuccess(),
+    onSuccess: () => {
+      onSuccessCallbacks.forEach((callback) => callback());
+    },
   });
   const removeTransaction = async (id: string) => {
     await deleteOne.mutateAsync({ id });

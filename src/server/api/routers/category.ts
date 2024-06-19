@@ -22,6 +22,9 @@ export const categoryRouter = createTRPCRouter({
   getOne: protectedProcedure
     .input(z.object({ id: z.string() }))
     .query(({ ctx, input }) => {
-      return ctx.db.category.findUnique({ where: { id: input.id } });
+      return ctx.db.category.findUnique({
+        where: { id: input.id, userId: ctx.session.user.id },
+        include: { transactions: { include: { category: true } } },
+      });
     }),
 });

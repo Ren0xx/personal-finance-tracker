@@ -38,7 +38,7 @@ const RemoveTransactionForm = () => {
   const { transactions, refetchTransactions, isRefetchingTransactions } =
     useTransactions();
   // eslint-disable-next-line @typescript-eslint/no-misused-promises
-  const { removeTransaction } = useDeleteTransaction(refetchTransactions);
+  const { removeTransaction } = useDeleteTransaction([refetchTransactions]);
 
   const form = useForm<z.infer<typeof deleteTransactionSchema>>({
     resolver: zodResolver(deleteTransactionSchema),
@@ -102,7 +102,7 @@ const RemoveTransactionForm = () => {
                                 key={transaction.id}
                                 value={transaction.id}
                               >
-                                Transaction of amount:{" "}
+                                Transaction for amount:{" "}
                                 {transaction.amount.toString()}
                               </SelectItem>
                             ))}

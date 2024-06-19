@@ -14,13 +14,24 @@ import { Button } from "@/components/ui/button";
 import useDeleteTransaction from "@/hooks/DELETE/useDeleteTransaction";
 import useTransactions from "@/hooks/GET/useTransactions";
 import { type Table } from "@tanstack/react-table";
+import useUniqueCategory from "@/hooks/GET/useUniqueCategory";
 type DropdownProps = {
   transactionId: string;
+  categoryId: string;
 };
 export function ActionsMenuDropdown(props: DropdownProps) {
   const { refetchTransactions } = useTransactions();
-  // eslint-disable-next-line @typescript-eslint/no-misused-promises
-  const { removeTransaction } = useDeleteTransaction(refetchTransactions);
+  const { refetchCategory } = useUniqueCategory(props.categoryId);
+
+
+  // This solves the problem of not being able to pass the refetch function
+  // for the transaction for category/[id] route:
+  
+ // eslint-disable-next-line @typescript-eslint/no-misused-promises
+  const { removeTransaction } = useDeleteTransaction([
+    refetchCategory,
+    refetchTransactions,
+  ]);
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

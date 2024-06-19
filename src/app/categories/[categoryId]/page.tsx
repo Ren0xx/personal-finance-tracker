@@ -1,5 +1,6 @@
 "use client";
 import useUniqueCategory from "@/hooks/GET/useUniqueCategory";
+import TransactionsList from "@/components/Transactions";
 export default function Category({
   params,
 }: {
@@ -16,7 +17,13 @@ export default function Category({
   }
   return (
     <div>
-      <h1>Category name: {category.name} </h1>
+      <TransactionsList
+        // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
+        transactions={category?.transactions!}
+        isLoading={isLoading}
+        isError={isError}
+        filteringHidden={true}
+      />
     </div>
   );
 }
