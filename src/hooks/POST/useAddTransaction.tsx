@@ -15,6 +15,7 @@ const useAddTransaction = (onSuccessCallbacks: Array<() => void>) => {
   ) => {
     await createOne.mutateAsync({ categoryId, amount, description });
     toast({
+      variant: "success",
       title: "Transaction added",
       description: "Transaction added successfully.",
     });
