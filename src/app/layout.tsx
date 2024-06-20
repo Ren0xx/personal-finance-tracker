@@ -6,6 +6,7 @@ import SessionWrapper from "@/components/SessionWrapper";
 import SideNav from "@/components/SideNav";
 import { getServerAuthSession } from "@/server/auth";
 import NotLoggedIn from "@/components/NotLoggedIn";
+import { Toaster } from "@/components/ui/toaster";
 export const metadata = {
   title: "Finance Tracker",
   description: "Your best finance tracker app",
@@ -41,7 +42,10 @@ export default async function RootLayout({
                 ) : (
                   <div className="grid grid-cols-6 gap-4">
                     <MemoizedSideNav />
-                    <div className="col-span-5">{children}</div>
+                    <main className="col-span-5">
+                      {children}
+                    </main>
+                      <Toaster />
                   </div>
                 )}
               </div>

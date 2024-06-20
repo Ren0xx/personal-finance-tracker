@@ -27,11 +27,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import useAddTransaction from "@/hooks/POST/useAddTransaction";
-const AddTransactionForm =() => {
-  const { refetchTransactions, isRefetchingTransactions } = useTransactions();
-  // eslint-disable-next-line @typescript-eslint/no-misused-promises
-  const { addTransaction } = useAddTransaction(refetchTransactions);
+const AddTransactionForm = () => {
   const { categories } = useCategories();
+  const { refetchTransactions, isRefetchingTransactions } = useTransactions();
+
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
+  const { addTransaction } = useAddTransaction([refetchTransactions]);
 
   const form = useForm<z.infer<typeof createTransactionSchema>>({
     resolver: zodResolver(createTransactionSchema),
@@ -110,5 +111,5 @@ const AddTransactionForm =() => {
       </form>
     </Form>
   );
-}
+};
 export default AddTransactionForm;

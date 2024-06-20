@@ -51,10 +51,9 @@ export function DataTable<TData, TValue>({
       columnFilters,
     },
   });
-
   return (
     <div>
-      {filteringHidden === (undefined ?? false) && (
+      {!filteringHidden && (
         <div className="flex items-center py-4">
           <Input
             placeholder="Filter transactions by categories..."
