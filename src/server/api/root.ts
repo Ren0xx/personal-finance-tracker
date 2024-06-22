@@ -3,11 +3,14 @@ import { budgetRouter } from "@/server/api/routers/budget";
 import { categoryRouter } from "@/server/api/routers/category";
 import { transactionRouter } from "@/server/api/routers/transaction";
 import { savingsGoalRouter } from "@/server/api/routers/savingsGoal";
+import { userRouter } from "@/server/api/routers/user";
+
 export const appRouter = createTRPCRouter({
   budget: budgetRouter,
   category: categoryRouter,
   savingsGoal: savingsGoalRouter,
   transaction: transactionRouter,
+  user: userRouter,
 });
 // export type definition of API
 export type AppRouter = typeof appRouter;

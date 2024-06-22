@@ -3,6 +3,7 @@ import useUniqueCategory from "@/hooks/GET/useUniqueCategory";
 import TransactionsList from "@/components/Transactions";
 import { H1 } from "@/components/ui/typography";
 import { Suspense } from "react";
+import { notFound } from "next/navigation";
 export default function Category({
   params,
 }: {
@@ -15,7 +16,7 @@ export default function Category({
   }
 
   if (isError || category === null || category === undefined) {
-    return <div>This category doesn&apos;t exist</div>;
+    notFound();
   }
   return (
     <>
@@ -29,6 +30,6 @@ export default function Category({
           filteringHidden={true}
         />
       </Suspense>
-      </>
+    </>
   );
 }
