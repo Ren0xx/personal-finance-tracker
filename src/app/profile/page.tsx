@@ -1,24 +1,17 @@
-import { H1 } from "@/components/ui/typography";
 import { api } from "@/trpc/server";
-import ProfileAvatar from "./_components/Avatar";
 import UpdateNameForm from "./_components/UpdateNameForm";
+import ProfileShowcase from "./_components/ProfileShowcase";
+import DeleteAccountForm from "./_components/DeleteAccountForm";
 export default async function Profile() {
-  const res = await api.user.getOne();
-  if (!res) {
+  const user = await api.user.getOne();
+  if (!user) {
     return <>Error</>;
   }
   return (
     <>
-      <H1>Profile</H1>
-      <div></div>
-      <ProfileAvatar
-        src={res?.image ?? "https://github.com/shadcn.png"}
-        fallback={res?.name ?? "Not Found"}
-      />
-      <div>
-        <H1>{res?.name}</H1>
-      </div>
-      <UpdateNameForm currentUserName={res.name ?? ""} />
+      <ProfileShowcase name={user.name} image={user.image} />
+      <UpdateNameForm currentUserName={user.name ?? ""} />
+      <DeleteAccountForm />
     </>
   );
 }

@@ -52,14 +52,12 @@ const UpdateNameForm = (props: UpdateNameFormProps) => {
               <FormControl>
                 <Input placeholder="Your new name" {...field} />
               </FormControl>
-              <FormDescription>
-                This is your public display name.
-              </FormDescription>
+              <FormDescription>Change your username.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <Button type="submit">Change name</Button>
       </form>
     </Form>
   );
