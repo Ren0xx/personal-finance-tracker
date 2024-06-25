@@ -5,6 +5,7 @@ export const createSavingsGoalSchema = (existingSavingsGoals: SavingsGoal[]) =>
   z.object({
     name: z
       .string()
+      .trim()
       .min(3, {
         message: "Name must have at least 3 characters.",
       })
@@ -17,6 +18,7 @@ export const createSavingsGoalSchema = (existingSavingsGoals: SavingsGoal[]) =>
       ),
     targetAmount: z
       .string()
+      .trim()
       .regex(/^\d+(\.\d{1,2})?$/, {
         message: "Amount must be a valid number with up to two decimal places.",
       })
@@ -25,6 +27,7 @@ export const createSavingsGoalSchema = (existingSavingsGoals: SavingsGoal[]) =>
     deadline: z.date({ required_error: "A deadline must be provided" }),
     currentAmount: z
       .string()
+      .trim()
       .regex(/^\d+(\.\d{1,2})?$/, {
         message: "Amount must be a valid number with up to two decimal places.",
       })

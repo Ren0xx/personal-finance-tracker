@@ -5,6 +5,7 @@ export const createCategorySchema = (existingCategories: Category[]) =>
   z.object({
     name: z
       .string()
+      .trim()
       .min(3, {
         message: "Name must have at least 3 characters.",
       })

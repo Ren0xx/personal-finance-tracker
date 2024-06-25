@@ -5,6 +5,7 @@ export const createBudgetSchema = (existingBudgets: Budget[]) =>
   z.object({
     name: z
       .string()
+      .trim()
       .min(3, {
         message: "Name must have at least 3 characters.",
       })
@@ -22,6 +23,7 @@ export const createBudgetSchema = (existingBudgets: Budget[]) =>
 
     amount: z
       .string()
+      .trim()
       .regex(/^\d+(\.\d{1,2})?$/, {
         message: "Amount must be a valid number with up to two decimal places.",
       })

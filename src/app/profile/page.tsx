@@ -4,6 +4,9 @@ import ProfileAvatar from "./_components/Avatar";
 import UpdateNameForm from "./_components/UpdateNameForm";
 export default async function Profile() {
   const res = await api.user.getOne();
+  if (!res) {
+    return <>Error</>;
+  }
   return (
     <>
       <H1>Profile</H1>
@@ -15,7 +18,7 @@ export default async function Profile() {
       <div>
         <H1>{res?.name}</H1>
       </div>
-      <UpdateNameForm />
+      <UpdateNameForm currentUserName={res.name ?? ""} />
     </>
   );
 }
