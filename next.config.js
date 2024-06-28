@@ -7,7 +7,10 @@ await import("./src/env.js");
 /** @type {import("next").NextConfig} */
 const config = {
   images: {
-    domains: ["avatars.githubusercontent.com", "cdn.discordapp.com"],
+    remotePatterns: [
+      { hostname: "avatars.githubusercontent.com" },
+      { hostname: "cdn.discordapp.com" },
+    ],
   },
 };
 

@@ -23,9 +23,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import useCategories from "@/hooks/GET/useCategories";
-import useBudgets from "@/hooks/GET/useBudgets";
-import useAddBudget from "@/hooks/POST/useAddBudget";
+import { DatePickerWithRange } from "@/components/datepickers/DatePickerWithRange";
 import {
   Select,
   SelectContent,
@@ -33,19 +31,25 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+
 import { type z } from "zod";
-import { DatePickerWithRange } from "@/components/datepickers/DatePickerWithRange";
+import { type RouterOutputs } from "@/trpc/react";
+type Category = RouterOutputs["category"]["getAll"][0];
+type Budget = RouterOutputs["budget"]["getAll"][0];
 
-const AddBudgetForm = () => {
-  const { categories } = useCategories();
-  const { budgets, refetchBudgets, isRefetchingBudgets } = useBudgets();
+import { createBudget } from "@/server/actions/create";
+import { useToast } from "@/components/ui/use-toast";
 
-  // eslint-disable-next-line @typescript-eslint/no-misused-promises
-  const { addBudget } = useAddBudget(refetchBudgets);
+type AddBudgetFormProps = {
+  categories: Category[];
+  budgets: Budget[];
+};
+const AddBudgetForm = (props: AddBudgetFormProps) => {
+  const { categories, budgets } = props;
   const [open, setOpen] = useState(false);
+  const { toast } = useToast();
 
-  const formSchema = useMemo(() => createBudgetSchema(budgets!), [budgets]);
-
+  const formSchema = useMemo(() => createBudgetSchema(budgets), [budgets]);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -61,7 +65,7 @@ const AddBudgetForm = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    await addBudget({
+    await createBudget({
       name: values.name,
       amount: parseFloat(values.amount),
       description: values.description,
@@ -70,6 +74,11 @@ const AddBudgetForm = () => {
       endDate: values.dateRange.to,
     });
     setOpen(false);
+    toast({
+      variant: "success",
+      title: "Budget created!",
+      description: "Budget created successfully.",
+    });
   };
 
   return (
@@ -168,9 +177,7 @@ const AddBudgetForm = () => {
                 </FormItem>
               )}
             />
-            <Button type="submit" disabled={isRefetchingBudgets}>
-              Submit
-            </Button>
+            <Button type="submit">Create Budget</Button>
           </form>
         </Form>
       </DialogContent>

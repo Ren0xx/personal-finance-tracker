@@ -37,18 +37,17 @@ import {
 
 type RemoveCategoryProps = {
   categories: Category[];
-  isRefetching: boolean;
-  refetch: () => void;
 };
-import useDeleteCategory from "@/hooks/DELETE/useDeleteCategory";
-
+import { deleteCategory } from "@/server/actions/delete";
+import { useToast } from "@/components/ui/use-toast";
 const RemoveCategoryForm = (props: RemoveCategoryProps) => {
+  const { categories } = props;
+
   const [open, setOpen] = useState<boolean>(false);
+  const { toast } = useToast();
   const [confirmOpen, setConfirmOpen] = useState<boolean>(false);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
-  const { categories, refetch, isRefetching } = props;
-  const { removeCategory } = useDeleteCategory(refetch);
   const form = useForm<z.infer<typeof deleteCategorySchema>>({
     resolver: zodResolver(deleteCategorySchema),
     defaultValues: {
@@ -63,16 +62,21 @@ const RemoveCategoryForm = (props: RemoveCategoryProps) => {
 
   async function handleConfirmDelete() {
     if (selectedCategory) {
-      await removeCategory(selectedCategory);
+      await deleteCategory(selectedCategory);
     }
     setConfirmOpen(false);
     setOpen(false);
+    toast({
+      variant: "destructive",
+      title: "Category deleted!",
+      description: "Category deleted successfully.",
+    });
   }
 
   return (
     <>
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogTrigger asChild disabled={isRefetching}>
+        <DialogTrigger asChild>
           <Button>Delete Category</Button>
         </DialogTrigger>
         <DialogContent>
@@ -114,9 +118,7 @@ const RemoveCategoryForm = (props: RemoveCategoryProps) => {
                   </FormItem>
                 )}
               />
-              <Button type="submit" disabled={isRefetching}>
-                Delete
-              </Button>
+              <Button type="submit">Delete</Button>
             </form>
           </Form>
         </DialogContent>

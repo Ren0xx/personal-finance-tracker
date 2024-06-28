@@ -5,6 +5,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { deleteTransactionSchema } from "@/schemas/transaction";
 import { useForm } from "react-hook-form";
 import { type z } from "zod";
+import { type RouterOutputs } from "@/trpc/react";
+type Transaction = RouterOutputs["transaction"]["getAll"][0];
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -31,15 +33,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import useTransactions from "@/hooks/GET/useTransactions";
-import useDeleteTransaction from "@/hooks/DELETE/useDeleteTransaction";
-
-const RemoveTransactionForm = () => {
-  const { transactions, refetchTransactions, isRefetchingTransactions } =
-    useTransactions();
-  // eslint-disable-next-line @typescript-eslint/no-misused-promises
-  const { removeTransaction } = useDeleteTransaction([refetchTransactions]);
-
+import { deleteTransaction } from "@/server/actions/delete";
+import { useToast } from "@/components/ui/use-toast";
+type RemoveTransactionFormProps = {
+  transactions: Transaction[];
+};
+const RemoveTransactionForm = (props: RemoveTransactionFormProps) => {
+  const { transactions } = props;
   const form = useForm<z.infer<typeof deleteTransactionSchema>>({
     resolver: zodResolver(deleteTransactionSchema),
     defaultValues: {
@@ -47,6 +47,7 @@ const RemoveTransactionForm = () => {
     },
   });
 
+  const { toast } = useToast();
   const [open, setOpen] = useState<boolean>(false);
   const [confirmOpen, setConfirmOpen] = useState<boolean>(false);
   const [selectedTransaction, setSelectedTransaction] = useState<string>(
@@ -59,16 +60,21 @@ const RemoveTransactionForm = () => {
 
   async function handleConfirmDelete() {
     if (selectedTransaction) {
-      await removeTransaction(selectedTransaction);
+      await deleteTransaction(selectedTransaction);
     }
     setConfirmOpen(false);
     setOpen(false);
+    toast({
+      variant: "destructive",
+      title: "Transaction deleted!",
+      description: "Transaction deleted successfully.",
+    });
   }
 
   return (
     <>
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogTrigger asChild disabled={isRefetchingTransactions}>
+        <DialogTrigger asChild>
           <Button>Delete Transaction</Button>
         </DialogTrigger>
         <DialogContent>
@@ -114,9 +120,7 @@ const RemoveTransactionForm = () => {
                   </FormItem>
                 )}
               />
-              <Button type="submit" disabled={isRefetchingTransactions}>
-                Delete
-              </Button>
+              <Button type="submit">Delete</Button>
             </form>
           </Form>
         </DialogContent>

@@ -25,17 +25,15 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import useAddCategory from "@/hooks/POST/useAddCategory";
-
+import { useToast } from "@/components/ui/use-toast";
+import { createCategory } from "@/server/actions/create";
 type AddCategoryFormProps = {
   categories: Category[];
-  isRefetching: boolean;
-  refetch: () => void;
 };
 const AddCategoryForm = (props: AddCategoryFormProps) => {
-  const { categories, isRefetching, refetch } = props;
-  const { addCategory } = useAddCategory(refetch);
+  const { categories } = props;
   const [open, setOpen] = useState<boolean>(false);
+  const { toast } = useToast();
 
   const formSchema = useMemo(
     () => createCategorySchema(categories),
@@ -50,8 +48,13 @@ const AddCategoryForm = (props: AddCategoryFormProps) => {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    await addCategory(values.name);
+    await createCategory(values.name);
     setOpen(false);
+    toast({
+      variant: "success",
+      title: "Category created!",
+      description: "Category created successfully.",
+    });
   }
 
   return (
@@ -81,9 +84,7 @@ const AddCategoryForm = (props: AddCategoryFormProps) => {
                 </FormItem>
               )}
             />
-            <Button type="submit" disabled={isRefetching}>
-              Submit
-            </Button>
+            <Button type="submit">Submit</Button>
           </form>
         </Form>
       </DialogContent>

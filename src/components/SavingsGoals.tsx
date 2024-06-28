@@ -1,9 +1,15 @@
 "use client";
 
-import useSavingsGoals from "@/hooks/GET/useSavingsGoals";
 import { H4 } from "@/components/ui/typography";
-const SavingsGoalsList = () => {
-  const { savingsGoals } = useSavingsGoals();
+
+import { type RouterOutputs } from "@/trpc/react";
+type SavingsGoal = RouterOutputs["savingsGoal"]["getAll"][0];
+
+type SavingsGoalsProps = {
+  savingsGoals: SavingsGoal[];
+};
+const SavingsGoalsList = (props: SavingsGoalsProps) => {
+  const { savingsGoals } = props;
   return (
     <div>
       {savingsGoals?.map((goal) => {

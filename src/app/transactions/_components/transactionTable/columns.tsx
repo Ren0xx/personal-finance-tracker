@@ -5,7 +5,7 @@ import { type ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 
 import { format } from "date-fns";
-import { ActionsMenuDropdown } from "./resusable";
+import { ActionsMenuDropdown } from "./reusable";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 export const columns: ColumnDef<Transaction>[] = [
@@ -78,12 +78,7 @@ export const columns: ColumnDef<Transaction>[] = [
     id: "actions",
     cell: ({ row }) => {
       const transaction = row.original;
-      return (
-        <ActionsMenuDropdown
-          transactionId={transaction.id}
-          categoryId={transaction.categoryId}
-        />
-      );
+      return <ActionsMenuDropdown transactionId={transaction.id} />;
     },
   },
 ];

@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { type RouterOutputs } from "@/trpc/react";
 type SavingsGoal = RouterOutputs["savingsGoal"]["getAll"][0];
+//TODO Pass only names 
 export const createSavingsGoalSchema = (existingSavingsGoals: SavingsGoal[]) =>
   z.object({
     name: z

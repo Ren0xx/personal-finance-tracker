@@ -11,27 +11,22 @@ import { SlidersHorizontalIcon } from "lucide-react";
 
 import { MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import useDeleteTransaction from "@/hooks/DELETE/useDeleteTransaction";
-import useTransactions from "@/hooks/GET/useTransactions";
 import { type Table } from "@tanstack/react-table";
-import useUniqueCategory from "@/hooks/GET/useUniqueCategory";
+import { deleteTransaction } from "@/server/actions/delete";
+import { useToast } from "@/components/ui/use-toast";
 type DropdownProps = {
   transactionId: string;
-  categoryId: string;
 };
 export function ActionsMenuDropdown(props: DropdownProps) {
-  const { refetchTransactions } = useTransactions();
-  const { refetchCategory } = useUniqueCategory(props.categoryId);
-
-
-  // This solves the problem of not being able to pass the refetch function
-  // for the transaction for category/[id] route:
-  
- // eslint-disable-next-line @typescript-eslint/no-misused-promises
-  const { removeTransaction } = useDeleteTransaction([
-    refetchCategory,
-    refetchTransactions,
-  ]);
+  const { toast } = useToast();
+  const handleClick = async () => {
+    await deleteTransaction(props.transactionId);
+    toast({
+      variant: "destructive",
+      title: "Transaction deleted",
+      description: "Your transaction has been deleted.",
+    });
+  };
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -42,9 +37,7 @@ export function ActionsMenuDropdown(props: DropdownProps) {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-        <DropdownMenuItem
-          onClick={() => removeTransaction(props.transactionId)}
-        >
+        <DropdownMenuItem onClick={handleClick}>
           Delete transaction
         </DropdownMenuItem>
       </DropdownMenuContent>

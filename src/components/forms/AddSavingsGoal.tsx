@@ -6,6 +6,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { createSavingsGoalSchema } from "@/schemas/savingsGoal";
 
+import { type RouterOutputs } from "@/trpc/react";
+type SavingsGoal = RouterOutputs["savingsGoal"]["getAll"][0];
+
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -26,19 +29,20 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { DatePicker } from "@/components/datepickers/DatePicker";
+import { useToast } from "@/components/ui/use-toast";
 
-import useSavingsGoals from "@/hooks/GET/useSavingsGoals";
-import useAddSavingsGoal from "@/hooks/POST/useAddSavingsGoal";
-
-const AddSavingGoal = () => {
+import { createSavingsGoal } from "@/server/actions/create";
+type SavingsGoalsProps = {
+  savingsGoals: SavingsGoal[];
+};
+const AddSavingGoal = (props: SavingsGoalsProps) => {
   const [open, setOpen] = useState(false);
-  const { savingsGoals, refetchSavingsGoals, isRefetchingSavingsGoals } =
-    useSavingsGoals();
+  const { savingsGoals } = props;
+  const { toast } = useToast();
 
-  // eslint-disable-next-line @typescript-eslint/no-misused-promises
-  const { addSavingsGoal } = useAddSavingsGoal(refetchSavingsGoals);
+  //TODO Pass only names not whole objects(savingsGoals)
   const formSchema = useMemo(
-    () => createSavingsGoalSchema(savingsGoals!),
+    () => createSavingsGoalSchema(savingsGoals),
     [savingsGoals],
   );
 
@@ -54,13 +58,18 @@ const AddSavingGoal = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const { name, targetAmount, deadline, currentAmount } = values;
-    await addSavingsGoal(
+    await createSavingsGoal(
       name,
       parseFloat(targetAmount),
       deadline,
       currentAmount ? parseFloat(currentAmount) : undefined,
     );
     setOpen(false);
+    toast({
+      variant: "success",
+      title: "Savings goal created!",
+      description: "Savings goal created successfully.",
+    });
   };
 
   return (
@@ -140,9 +149,7 @@ const AddSavingGoal = () => {
               )}
             />
 
-            <Button type="submit" disabled={isRefetchingSavingsGoals}>
-              Submit
-            </Button>
+            <Button type="submit">Submit</Button>
           </form>
         </Form>
       </DialogContent>

@@ -20,7 +20,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { DataTableViewOptions } from "./resusable";
+import { DataTableViewOptions } from "./reusable";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 type DataTableProps<TData, TValue> = {

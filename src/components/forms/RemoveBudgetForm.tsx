@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { type RouterOutputs } from "@/trpc/react";
 import { deleteBudgetSchema } from "@/schemas/budget";
 import { useForm } from "react-hook-form";
 import { type z } from "zod";
@@ -31,14 +32,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import useBudgets from "@/hooks/GET/useBudgets";
-import useDeleteBudget from "@/hooks/DELETE/useDeleteBudget";
-
-const RemoveBudgetForm = () => {
-  const { budgets, refetchBudgets, isRefetchingBudgets } = useBudgets();
-
-// eslint-disable-next-line @typescript-eslint/no-misused-promises
-const { removeBudget } = useDeleteBudget(refetchBudgets);
+import { deleteBudget } from "@/server/actions/delete";
+import { useToast } from "@/components/ui/use-toast";
+type Budget = RouterOutputs["budget"]["getAll"][0];
+type RemoveBudgetFormProps = {
+  budgets: Budget[];
+};
+const RemoveBudgetForm = (props: RemoveBudgetFormProps) => {
+  const { budgets } = props;
 
   const form = useForm<z.infer<typeof deleteBudgetSchema>>({
     resolver: zodResolver(deleteBudgetSchema),
@@ -46,8 +47,7 @@ const { removeBudget } = useDeleteBudget(refetchBudgets);
       budgetId: "",
     },
   });
-  
-
+  const { toast } = useToast();
   const [open, setOpen] = useState<boolean>(false);
   const [confirmOpen, setConfirmOpen] = useState<boolean>(false);
   const [selectedBudget, setSelectedBudget] = useState<string>(
@@ -61,16 +61,21 @@ const { removeBudget } = useDeleteBudget(refetchBudgets);
 
   async function handleConfirmDelete() {
     if (selectedBudget) {
-      await removeBudget(selectedBudget);
+      await deleteBudget(selectedBudget);
     }
     setConfirmOpen(false);
     setOpen(false);
+    toast({
+      variant: "destructive",
+      title: "Budget deleted!",
+      description: "Budget deleted successfully.",
+    });
   }
 
   return (
     <>
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogTrigger asChild disabled={isRefetchingBudgets}>
+        <DialogTrigger asChild>
           <Button>Delete Budget</Button>
         </DialogTrigger>
         <DialogContent>
@@ -112,9 +117,7 @@ const { removeBudget } = useDeleteBudget(refetchBudgets);
                   </FormItem>
                 )}
               />
-              <Button type="submit" disabled={isRefetchingBudgets}>
-                Delete
-              </Button>
+              <Button type="submit">Delete</Button>
             </form>
           </Form>
         </DialogContent>

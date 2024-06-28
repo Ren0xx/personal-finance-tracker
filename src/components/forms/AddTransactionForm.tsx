@@ -3,8 +3,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { createTransactionSchema } from "@/schemas/transaction";
+import { type RouterOutputs } from "@/trpc/react";
+type Category = RouterOutputs["category"]["getAll"][0];
 import { type z } from "zod";
-import useTransactions from "@/hooks/GET/useTransactions";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -16,7 +17,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import useCategories from "@/hooks/GET/useCategories";
 import {
   Select,
   SelectContent,
@@ -26,14 +26,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import useAddTransaction from "@/hooks/POST/useAddTransaction";
-const AddTransactionForm = () => {
-  const { categories } = useCategories();
-  const { refetchTransactions, isRefetchingTransactions } = useTransactions();
+import { createTransaction } from "@/server/actions/create";
+import { useToast } from "@/components/ui/use-toast";
+type AddTransactionForm = {
+  categories: Category[];
+};
+const AddTransactionForm = (props: AddTransactionForm) => {
+  const { categories } = props;
 
-  // eslint-disable-next-line @typescript-eslint/no-misused-promises
-  const { addTransaction } = useAddTransaction([refetchTransactions]);
-
+  const { toast } = useToast();
   const form = useForm<z.infer<typeof createTransactionSchema>>({
     resolver: zodResolver(createTransactionSchema),
     defaultValues: {
@@ -45,7 +46,16 @@ const AddTransactionForm = () => {
 
   const onSubmit = async (values: z.infer<typeof createTransactionSchema>) => {
     const { amount, categoryId, description } = values;
-    await addTransaction(categoryId, parseFloat(amount), description);
+    await createTransaction({
+      categoryId,
+      amount: parseFloat(amount),
+      description,
+    });
+    toast({
+      variant: "success",
+      title: "Transaction created!",
+      description: "Transaction created successfully.",
+    });
   };
 
   return (
@@ -105,9 +115,7 @@ const AddTransactionForm = () => {
           )}
         />
 
-        <Button type="submit" disabled={isRefetchingTransactions}>
-          Submit
-        </Button>
+        <Button type="submit">Create Transaction</Button>
       </form>
     </Form>
   );

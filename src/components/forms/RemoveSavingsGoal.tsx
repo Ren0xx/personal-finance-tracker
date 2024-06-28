@@ -3,6 +3,10 @@
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { deleteSavingsGoalSchema } from "@/schemas/savingsGoal";
+
+import { type RouterOutputs } from "@/trpc/react";
+type SavingsGoal = RouterOutputs["savingsGoal"]["getAll"][0];
+
 import { useForm } from "react-hook-form";
 import { type z } from "zod";
 import { Button } from "@/components/ui/button";
@@ -31,15 +35,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import useSavingsGoals from "@/hooks/GET/useSavingsGoals";
-import useDeleteSavingsGoal from "@/hooks/DELETE/useDeleteSavingsGoal";
+import { deleteSavingsGoal } from "@/server/actions/delete";
+import { useToast } from "@/components/ui/use-toast";
 
-const RemoveSavingsGoalForm = () => {
-  const { savingsGoals, refetchSavingsGoals, isRefetchingSavingsGoals } =
-    useSavingsGoals();
+type SavingsGoalsProps = {
+  savingsGoals: SavingsGoal[];
+};
 
-  // eslint-disable-next-line @typescript-eslint/no-misused-promises
-  const { removeSavingsGoal } = useDeleteSavingsGoal(refetchSavingsGoals);
+const RemoveSavingsGoalForm = (props: SavingsGoalsProps) => {
+  const { savingsGoals } = props;
 
   const form = useForm<z.infer<typeof deleteSavingsGoalSchema>>({
     resolver: zodResolver(deleteSavingsGoalSchema),
@@ -47,6 +51,7 @@ const RemoveSavingsGoalForm = () => {
       savingsGoalId: "",
     },
   });
+  const { toast } = useToast();
   const [open, setOpen] = useState<boolean>(false);
   const [confirmOpen, setConfirmOpen] = useState<boolean>(false);
   const [selectedSavingsGoal, setSelectedSavingsGoal] = useState<string>(
@@ -60,16 +65,21 @@ const RemoveSavingsGoalForm = () => {
 
   async function handleConfirmDelete() {
     if (selectedSavingsGoal) {
-      await removeSavingsGoal(selectedSavingsGoal);
+      await deleteSavingsGoal(selectedSavingsGoal);
     }
     setConfirmOpen(false);
     setOpen(false);
+    toast({
+      variant: "destructive",
+      title: "Savings goal deleted!",
+      description: "Savings goal deleted successfully.",
+    });
   }
 
   return (
     <>
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogTrigger asChild disabled={isRefetchingSavingsGoals}>
+        <DialogTrigger asChild>
           <Button>Delete Savings Goal</Button>
         </DialogTrigger>
         <DialogContent>
@@ -114,7 +124,7 @@ const RemoveSavingsGoalForm = () => {
                   </FormItem>
                 )}
               />
-              <Button type="submit" disabled={isRefetchingSavingsGoals}>
+              <Button type="submit" variant="destructive">
                 Delete
               </Button>
             </form>
