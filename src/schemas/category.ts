@@ -1,7 +1,5 @@
 import { z } from "zod";
-import { type RouterOutputs } from "@/trpc/react";
-type Category = RouterOutputs["category"]["getAll"][0];
-export const createCategorySchema = (existingCategories: Category[]) =>
+export const createCategorySchema = (existingCategoriesNames: Array<string>) =>
   z.object({
     name: z
       .string()
@@ -11,8 +9,8 @@ export const createCategorySchema = (existingCategories: Category[]) =>
       })
       .refine(
         (name) =>
-          !existingCategories.some(
-            (category) => category.name.toLowerCase() === name.toLowerCase(),
+          !existingCategoriesNames.some(
+            (categoryName) => categoryName.toLowerCase() === name.toLowerCase(),
           ),
         { message: "Category already exists." },
       ),

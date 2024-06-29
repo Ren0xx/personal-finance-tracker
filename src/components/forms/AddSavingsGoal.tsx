@@ -6,9 +6,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { createSavingsGoalSchema } from "@/schemas/savingsGoal";
 
-import { type RouterOutputs } from "@/trpc/react";
-type SavingsGoal = RouterOutputs["savingsGoal"]["getAll"][0];
-
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -33,17 +30,16 @@ import { useToast } from "@/components/ui/use-toast";
 
 import { createSavingsGoal } from "@/server/actions/create";
 type SavingsGoalsProps = {
-  savingsGoals: SavingsGoal[];
+  savingsGoalsNames: Array<string>;
 };
 const AddSavingGoal = (props: SavingsGoalsProps) => {
   const [open, setOpen] = useState(false);
-  const { savingsGoals } = props;
+  const { savingsGoalsNames } = props;
   const { toast } = useToast();
 
-  //TODO Pass only names not whole objects(savingsGoals)
   const formSchema = useMemo(
-    () => createSavingsGoalSchema(savingsGoals),
-    [savingsGoals],
+    () => createSavingsGoalSchema(savingsGoalsNames),
+    [savingsGoalsNames],
   );
 
   const form = useForm<z.infer<typeof formSchema>>({

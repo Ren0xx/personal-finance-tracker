@@ -10,10 +10,11 @@ export default async function Billings() {
     categoriesData,
     budgetsData,
   ]);
+  const budgetsNames = budgets.map((budget) => budget.name);
   return (
     <div>
       <H1>Budget</H1>
-      <AddBudgetForm categories={categories} budgets={budgets} />
+      <AddBudgetForm categories={categories} budgetsNames={budgetsNames} />
       <RemoveBudgetForm budgets={budgets} />
     </div>
   );

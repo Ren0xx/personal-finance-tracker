@@ -1,7 +1,5 @@
 import { z } from "zod";
-import { type RouterOutputs } from "@/trpc/react";
-type Budget = RouterOutputs["budget"]["getAll"][0];
-export const createBudgetSchema = (existingBudgets: Budget[]) =>
+export const createBudgetSchema = (existingBudgetsNames: Array<string>) =>
   z.object({
     name: z
       .string()
@@ -11,8 +9,8 @@ export const createBudgetSchema = (existingBudgets: Budget[]) =>
       })
       .refine(
         (name) =>
-          !existingBudgets.some(
-            (budget) => budget.name.toLowerCase() === name.toLowerCase(),
+          !existingBudgetsNames.some(
+            (existingName) => existingName.toLowerCase() === name.toLowerCase(),
           ),
         { message: "Budget already exists." },
       ),

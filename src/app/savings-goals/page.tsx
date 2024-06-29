@@ -6,10 +6,11 @@ import { api } from "@/trpc/server";
 
 export default async function SavingsGoals() {
   const savingsGoals = await api.savingsGoal.getAll();
+  const savingsGoalsNames = savingsGoals.map((goal) => goal.name);
   return (
     <div>
       <H1>Savings Goals</H1>
-      <AddSavingsGoal savingsGoals={savingsGoals} />
+      <AddSavingsGoal savingsGoalsNames={savingsGoalsNames} />
       <RemoveSavingsGoalForm savingsGoals={savingsGoals} />
       <SavingsGoalsList savingsGoals={savingsGoals} />
     </div>

@@ -35,21 +35,23 @@ import {
 import { type z } from "zod";
 import { type RouterOutputs } from "@/trpc/react";
 type Category = RouterOutputs["category"]["getAll"][0];
-type Budget = RouterOutputs["budget"]["getAll"][0];
 
 import { createBudget } from "@/server/actions/create";
 import { useToast } from "@/components/ui/use-toast";
 
 type AddBudgetFormProps = {
   categories: Category[];
-  budgets: Budget[];
+  budgetsNames: Array<string>;
 };
 const AddBudgetForm = (props: AddBudgetFormProps) => {
-  const { categories, budgets } = props;
+  const { categories, budgetsNames } = props;
   const [open, setOpen] = useState(false);
   const { toast } = useToast();
 
-  const formSchema = useMemo(() => createBudgetSchema(budgets), [budgets]);
+  const formSchema = useMemo(
+    () => createBudgetSchema(budgetsNames),
+    [budgetsNames],
+  );
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {

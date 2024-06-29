@@ -1,8 +1,5 @@
 import { z } from "zod";
-import { type RouterOutputs } from "@/trpc/react";
-type SavingsGoal = RouterOutputs["savingsGoal"]["getAll"][0];
-//TODO Pass only names 
-export const createSavingsGoalSchema = (existingSavingsGoals: SavingsGoal[]) =>
+export const createSavingsGoalSchema = (existingSavingsGoals: Array<string>) =>
   z.object({
     name: z
       .string()
@@ -13,7 +10,7 @@ export const createSavingsGoalSchema = (existingSavingsGoals: SavingsGoal[]) =>
       .refine(
         (name) =>
           !existingSavingsGoals.some(
-            (goal) => goal.name.toLowerCase() === name.toLowerCase(),
+            (goalName) => goalName.toLowerCase() === name.toLowerCase(),
           ),
         { message: "Savings goal already exists" },
       ),

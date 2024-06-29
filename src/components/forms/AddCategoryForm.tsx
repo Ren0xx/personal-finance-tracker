@@ -6,8 +6,6 @@ import { createCategorySchema } from "@/schemas/category";
 import { useState, useMemo } from "react";
 import { type z } from "zod";
 import { Button } from "@/components/ui/button";
-import { type RouterOutputs } from "@/trpc/react";
-type Category = RouterOutputs["category"]["getAll"][0];
 import {
   Dialog,
   DialogContent,
@@ -28,16 +26,16 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import { createCategory } from "@/server/actions/create";
 type AddCategoryFormProps = {
-  categories: Category[];
+  categoriesNames: Array<string>;
 };
 const AddCategoryForm = (props: AddCategoryFormProps) => {
-  const { categories } = props;
+  const { categoriesNames } = props;
   const [open, setOpen] = useState<boolean>(false);
   const { toast } = useToast();
 
   const formSchema = useMemo(
-    () => createCategorySchema(categories),
-    [categories],
+    () => createCategorySchema(categoriesNames),
+    [categoriesNames],
   );
 
   const form = useForm<z.infer<typeof formSchema>>({
