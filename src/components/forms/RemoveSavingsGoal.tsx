@@ -7,7 +7,7 @@ import { deleteSavingsGoalSchema } from "@/schemas/savingsGoal";
 import { type RouterOutputs } from "@/trpc/react";
 type SavingsGoal = RouterOutputs["savingsGoal"]["getAll"][0];
 
-import { useForm } from "react-hook-form";
+import { useForm, useFormState } from "react-hook-form";
 import { type z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
@@ -58,6 +58,7 @@ const RemoveSavingsGoalForm = (props: SavingsGoalsProps) => {
     form.getValues().savingsGoalId,
   );
 
+  const { isSubmitting } = useFormState({ control: form.control });
   function onSubmit(values: z.infer<typeof deleteSavingsGoalSchema>) {
     setSelectedSavingsGoal(values.savingsGoalId);
     setConfirmOpen(true);
@@ -124,7 +125,11 @@ const RemoveSavingsGoalForm = (props: SavingsGoalsProps) => {
                   </FormItem>
                 )}
               />
-              <Button type="submit" variant="destructive">
+              <Button
+                type="submit"
+                variant="destructive"
+                disabled={isSubmitting}
+              >
                 Delete
               </Button>
             </form>

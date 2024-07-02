@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, useFormState } from "react-hook-form";
 import { createBudgetSchema } from "@/schemas/budget";
 import { Button } from "@/components/ui/button";
 import {
@@ -65,6 +65,7 @@ const AddBudgetForm = (props: AddBudgetFormProps) => {
       },
     },
   });
+  const { isSubmitting } = useFormState({ control: form.control });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     await createBudget({
@@ -179,7 +180,9 @@ const AddBudgetForm = (props: AddBudgetFormProps) => {
                 </FormItem>
               )}
             />
-            <Button type="submit">Create Budget</Button>
+            <Button type="submit" disabled={isSubmitting}>
+              Create Budget
+            </Button>
           </form>
         </Form>
       </DialogContent>

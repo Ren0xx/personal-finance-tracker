@@ -4,7 +4,7 @@ import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type RouterOutputs } from "@/trpc/react";
 import { deleteBudgetSchema } from "@/schemas/budget";
-import { useForm } from "react-hook-form";
+import { useForm, useFormState } from "react-hook-form";
 import { type z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
@@ -54,6 +54,7 @@ const RemoveBudgetForm = (props: RemoveBudgetFormProps) => {
     form.getValues().budgetId,
   );
 
+  const { isSubmitting } = useFormState({ control: form.control });
   function onSubmit(values: z.infer<typeof deleteBudgetSchema>) {
     setSelectedBudget(values.budgetId);
     setConfirmOpen(true);
@@ -117,7 +118,7 @@ const RemoveBudgetForm = (props: RemoveBudgetFormProps) => {
                   </FormItem>
                 )}
               />
-              <Button type="submit">Delete</Button>
+              <Button type="submit" disabled={isSubmitting}>Delete</Button>
             </form>
           </Form>
         </DialogContent>

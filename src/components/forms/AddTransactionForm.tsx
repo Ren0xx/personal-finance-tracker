@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, useFormState } from "react-hook-form";
 import { createTransactionSchema } from "@/schemas/transaction";
 import { type RouterOutputs } from "@/trpc/react";
 type Category = RouterOutputs["category"]["getAll"][0];
@@ -44,6 +44,7 @@ const AddTransactionForm = (props: AddTransactionForm) => {
     },
   });
 
+  const { isSubmitting } = useFormState({ control: form.control });
   const onSubmit = async (values: z.infer<typeof createTransactionSchema>) => {
     const { amount, categoryId, description } = values;
     await createTransaction({
@@ -115,7 +116,9 @@ const AddTransactionForm = (props: AddTransactionForm) => {
           )}
         />
 
-        <Button type="submit">Create Transaction</Button>
+        <Button type="submit" disabled={isSubmitting}>
+          Create Transaction
+        </Button>
       </form>
     </Form>
   );

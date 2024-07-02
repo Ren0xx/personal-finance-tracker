@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, useFormState } from "react-hook-form";
 import { createCategorySchema } from "@/schemas/category";
 import { useState, useMemo } from "react";
 import { type z } from "zod";
@@ -45,6 +45,7 @@ const AddCategoryForm = (props: AddCategoryFormProps) => {
     },
   });
 
+  const { isSubmitting } = useFormState({ control: form.control });
   async function onSubmit(values: z.infer<typeof formSchema>) {
     await createCategory(values.name);
     setOpen(false);
@@ -82,7 +83,7 @@ const AddCategoryForm = (props: AddCategoryFormProps) => {
                 </FormItem>
               )}
             />
-            <Button type="submit">Submit</Button>
+            <Button type="submit" disabled={isSubmitting}>Submit</Button>
           </form>
         </Form>
       </DialogContent>

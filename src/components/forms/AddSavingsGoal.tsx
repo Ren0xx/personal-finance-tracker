@@ -3,7 +3,7 @@
 import { type z } from "zod";
 import { useMemo, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, useFormState } from "react-hook-form";
 import { createSavingsGoalSchema } from "@/schemas/savingsGoal";
 
 import { Button } from "@/components/ui/button";
@@ -52,6 +52,7 @@ const AddSavingGoal = (props: SavingsGoalsProps) => {
     },
   });
 
+  const { isSubmitting } = useFormState({ control: form.control });
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const { name, targetAmount, deadline, currentAmount } = values;
     await createSavingsGoal(
@@ -136,7 +137,7 @@ const AddSavingGoal = (props: SavingsGoalsProps) => {
               name="deadline"
               render={({ field }) => (
                 <FormItem className="flex flex-col">
-                  <FormLabel>Start Date</FormLabel>
+                  <FormLabel>Deadline Date</FormLabel>
                   <DatePicker date={field.value} onChange={field.onChange} />
 
                   <FormDescription>Select the deadline date</FormDescription>
@@ -145,7 +146,9 @@ const AddSavingGoal = (props: SavingsGoalsProps) => {
               )}
             />
 
-            <Button type="submit">Submit</Button>
+            <Button type="submit" disabled={isSubmitting}>
+              Submit
+            </Button>
           </form>
         </Form>
       </DialogContent>

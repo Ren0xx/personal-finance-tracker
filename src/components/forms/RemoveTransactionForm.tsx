@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { deleteTransactionSchema } from "@/schemas/transaction";
-import { useForm } from "react-hook-form";
+import { useForm, useFormState } from "react-hook-form";
 import { type z } from "zod";
 import { type RouterOutputs } from "@/trpc/react";
 type Transaction = RouterOutputs["transaction"]["getAll"][0];
@@ -53,6 +53,8 @@ const RemoveTransactionForm = (props: RemoveTransactionFormProps) => {
   const [selectedTransaction, setSelectedTransaction] = useState<string>(
     form.getValues().transactionId,
   );
+
+  const { isSubmitting } = useFormState({ control: form.control });
   function onSubmit(values: z.infer<typeof deleteTransactionSchema>) {
     setSelectedTransaction(values.transactionId);
     setConfirmOpen(true);
@@ -120,7 +122,7 @@ const RemoveTransactionForm = (props: RemoveTransactionFormProps) => {
                   </FormItem>
                 )}
               />
-              <Button type="submit">Delete</Button>
+              <Button type="submit" disabled={isSubmitting}>Delete</Button>
             </form>
           </Form>
         </DialogContent>

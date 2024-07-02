@@ -44,3 +44,7 @@ yarn-error.log*
 
 # Million Lint
 .million
+
+
+# Contentlayer
+.contentlayer

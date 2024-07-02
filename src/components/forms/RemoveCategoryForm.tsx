@@ -6,7 +6,7 @@ type Category = RouterOutputs["category"]["getAll"][0];
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { deleteCategorySchema } from "@/schemas/category";
-import { useForm } from "react-hook-form";
+import { useForm, useFormState } from "react-hook-form";
 import { type z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
@@ -54,6 +54,7 @@ const RemoveCategoryForm = (props: RemoveCategoryProps) => {
       categoryId: "",
     },
   });
+  const { isSubmitting } = useFormState({ control: form.control });
 
   function onSubmit(values: z.infer<typeof deleteCategorySchema>) {
     setSelectedCategory(values.categoryId);
@@ -118,7 +119,7 @@ const RemoveCategoryForm = (props: RemoveCategoryProps) => {
                   </FormItem>
                 )}
               />
-              <Button type="submit">Delete</Button>
+              <Button type="submit" disabled={isSubmitting}>Delete</Button>
             </form>
           </Form>
         </DialogContent>
