@@ -1,5 +1,5 @@
 import "@/styles/globals.css";
-import { memo } from "react";
+import { memo, cache } from "react";
 import { ThemeProvider } from "@/components/theme-provider";
 import { TRPCReactProvider } from "@/trpc/react";
 import SessionWrapper from "@/components/SessionWrapper";
@@ -21,7 +21,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const authSession = await getServerAuthSession();
+  const authSession = cache(async () => await getServerAuthSession());
 
   return (
     <SessionWrapper>
@@ -42,10 +42,8 @@ export default async function RootLayout({
                 ) : (
                   <div className="grid grid-cols-6 gap-4">
                     <MemoizedSideNav />
-                    <main className="col-span-5">
-                      {children}
-                    </main>
-                      <Toaster />
+                    <main className="col-span-5">{children}</main>
+                    <Toaster />
                   </div>
                 )}
               </div>

@@ -1,8 +1,9 @@
+import { api } from "@/trpc/server";
 import { H1 } from "@/components/ui/typography";
 import AddBudgetForm from "@/components/forms/AddBudgetForm";
 import RemoveBudgetForm from "@/components/forms/RemoveBudgetForm";
-import ChartComponent from "@/components/charts/BudgetChart";
-import { api } from "@/trpc/server";
+import BarChart from "@/components/charts/BarChart";
+
 export default async function Budgets() {
   const categoriesData = api.category.getAll();
   const budgetsData = api.budget.getAll();
@@ -20,7 +21,7 @@ export default async function Budgets() {
   return (
     <div>
       <H1>Budget</H1>
-      <ChartComponent data={chartData} />
+      <BarChart data={chartData} />
       <AddBudgetForm categories={categories} budgetsNames={budgetsNames} />
       <RemoveBudgetForm budgets={budgets} />
     </div>

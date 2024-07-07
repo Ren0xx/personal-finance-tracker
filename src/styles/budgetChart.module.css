@@ -3,9 +3,3 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     padding: 4em;
 }
-
-.chart-container {
-    position: relative;
-    height: 400px;
-    width: 100%;
-}
