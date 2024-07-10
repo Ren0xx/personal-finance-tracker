@@ -1,6 +1,8 @@
 "use client";
 import { useMemo } from "react";
 import { Label, Pie, PieChart as Chart, Tooltip } from "recharts";
+import { type RouterOutputs } from "@/trpc/react";
+type Transaction = RouterOutputs["transaction"]["getAll"][0];
 import { groupBy, map, sumBy } from "lodash";
 import {
   Card,
@@ -10,21 +12,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { type ChartConfig, ChartContainer } from "@/components/ui/chart";
-import { type Decimal } from "@prisma/client/runtime/library";
-
-type Transaction = {
-  id: string;
-  userId: string;
-  categoryId: string;
-  amount: Decimal;
-  description: string | null;
-  date: Date;
-  category: {
-    id: string;
-    name: string;
-    userId: string;
-  };
-};
 
 type PieChartProps = {
   transactions: Transaction[];
@@ -47,7 +34,7 @@ const getColor = (index: number) => {
   return colors[index % colors.length];
 };
 
-function PieChart({ transactions }: PieChartProps) {
+function PieChartTransactions({ transactions }: PieChartProps) {
   const data = useMemo(() => {
     const grouped = groupBy(
       transactions,
@@ -123,4 +110,4 @@ function PieChart({ transactions }: PieChartProps) {
     </Card>
   );
 }
-export default PieChart;
+export default PieChartTransactions;

@@ -16,7 +16,9 @@ export const categoryRouter = createTRPCRouter({
     }),
 
   getAll: protectedProcedure.query(({ ctx }) => {
-    return ctx.db.category.findMany({ where: { userId: ctx.session.user.id } });
+    return ctx.db.category.findMany({
+      where: { userId: ctx.session.user.id },
+    });
   }),
 
   getOne: protectedProcedure
