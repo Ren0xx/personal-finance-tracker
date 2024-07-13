@@ -58,7 +58,7 @@ const SavingsGoalCard = ({ savingsGoal }: SavingsGoalCardProps) => {
       <CardHeader className="items-center pb-0">
         <CardTitle>
           Goal:
-          <Link href={`/savings-goals/${savingsGoal.id}`} prefetch={true}>
+          <Link href={`/savings-goals/${name}`} prefetch={true}>
             {name}
           </Link>
         </CardTitle>

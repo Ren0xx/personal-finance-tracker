@@ -33,4 +33,11 @@ export const savingsGoalRouter = createTRPCRouter({
       where: { userId: ctx.session.user.id },
     });
   }),
+  getOne: protectedProcedure
+    .input(z.object({ name: z.string() }))
+    .query(({ ctx, input }) => {
+      return ctx.db.savingsGoal.findFirst({
+        where: { name: input.name, userId: ctx.session.user.id },
+      });
+    }),
 });
