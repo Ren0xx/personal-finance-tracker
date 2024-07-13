@@ -1,7 +1,6 @@
 "use client";
 
-import { H4 } from "@/components/ui/typography";
-
+import SavingsGoalCard from "@/components/SavingsGoalCard";
 import { type RouterOutputs } from "@/trpc/react";
 type SavingsGoal = RouterOutputs["savingsGoal"]["getAll"][0];
 
@@ -12,15 +11,9 @@ const SavingsGoalsList = (props: SavingsGoalsProps) => {
   const { savingsGoals } = props;
   return (
     <div>
-      {savingsGoals?.map((goal) => {
-        return (
-          <div key={goal.id}>
-            <H4>{goal.name}</H4>
-            <H4>Amount: {goal.targetAmount.toString()}</H4>
-            <H4>{goal.id}</H4>
-          </div>
-        );
-      })}
+      {savingsGoals?.map((goal) => 
+        <SavingsGoalCard key={goal.id} savingsGoal={goal} />
+      )}
     </div>
   );
 };
