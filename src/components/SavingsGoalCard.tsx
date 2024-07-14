@@ -20,10 +20,10 @@ import {
 import { type RouterOutputs } from "@/trpc/react";
 import Link from "next/link";
 
-type SavingsGoal = RouterOutputs["savingsGoal"]["getAll"][0];
-
+type SavingsGoalAll = RouterOutputs["savingsGoal"]["getAll"][0];
+type SavingsGoalOne = RouterOutputs["savingsGoal"]["getOne"];
 type SavingsGoalCardProps = {
-  savingsGoal: SavingsGoal;
+  savingsGoal: SavingsGoalAll | SavingsGoalOne;
 };
 
 const chartConfig = {

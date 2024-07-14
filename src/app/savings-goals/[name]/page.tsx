@@ -1,7 +1,8 @@
 import { H1 } from "@/components/ui/typography";
 import { notFound } from "next/navigation";
 import { api } from "@/trpc/server";
-import { Button } from "@/components/ui/button";
+import SavingsGoalCard from "@/components/SavingsGoalCard";
+import EditSavingGoal from "@/components/forms/EditSavingsGoal";
 export default async function SavingsGoal({
   params,
 }: {
@@ -9,13 +10,14 @@ export default async function SavingsGoal({
 }) {
   const savingsGoal = await api.savingsGoal.getOne({ name: params.name });
 
-  if (savingsGoal === null) {
+  if (savingsGoal.name === undefined) {
     notFound();
   }
   return (
     <>
-      <H1>:{savingsGoal.name}</H1>
-      <Button>Edit Savings Goal</Button>
+      <H1>{savingsGoal.name}</H1>
+      <SavingsGoalCard savingsGoal={savingsGoal} />
+      <EditSavingGoal savingsGoal={savingsGoal} />
     </>
   );
 }

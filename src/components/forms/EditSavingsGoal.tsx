@@ -1,6 +1,7 @@
 "use client";
 
 import { type z } from "zod";
+import { type RouterOutputs } from "@/trpc/react";
 import { useMemo, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, useFormState } from "react-hook-form";
@@ -28,57 +29,60 @@ import { Input } from "@/components/ui/input";
 import { DatePicker } from "@/components/datepickers/DatePicker";
 import { useToast } from "@/components/ui/use-toast";
 
-import { createSavingsGoal } from "@/server/actions/create";
+import { updateSavingsGoal } from "@/server/actions/update";
+
+type SavingsGoal = RouterOutputs["savingsGoal"]["getOne"];
 type SavingsGoalsProps = {
-  savingsGoalsNames: Array<string>;
+  savingsGoal: SavingsGoal;
 };
-const AddSavingGoal = (props: SavingsGoalsProps) => {
+const EditSavingGoal = ({ savingsGoal }: SavingsGoalsProps) => {
   const [open, setOpen] = useState(false);
-  const { savingsGoalsNames } = props;
   const { toast } = useToast();
+  const alreadyTakenNames = savingsGoal.alreadyTakenNames.filter(
+    (name) => name !== savingsGoal.name,
+  );
 
   const formSchema = useMemo(
-    () => createSavingsGoalSchema(savingsGoalsNames),
-    [savingsGoalsNames],
+    () => createSavingsGoalSchema(alreadyTakenNames),
+    [alreadyTakenNames],
   );
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
-      targetAmount: "100",
-      deadline: undefined,
-      currentAmount: "0",
+      name: savingsGoal?.name,
+      targetAmount: savingsGoal?.targetAmount?.toString(),
+      currentAmount: savingsGoal?.currentAmount?.toString(),
+      deadline: savingsGoal?.deadline ?? new Date(),
     },
   });
 
   const { isSubmitting } = useFormState({ control: form.control });
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const { name, targetAmount, deadline, currentAmount } = values;
-    const target = parseFloat(targetAmount);
-    const current = parseFloat(currentAmount ?? "0");
-    await createSavingsGoal({
+    await updateSavingsGoal({
+      id: savingsGoal?.id ?? "",
       name,
-      targetAmount: target,
+      targetAmount: parseFloat(targetAmount),
       deadline,
-      currentAmount: current,
+      currentAmount: currentAmount ? parseFloat(currentAmount) : undefined,
     });
     setOpen(false);
     toast({
       variant: "success",
-      title: "Savings goal created!",
-      description: "Savings goal created successfully.",
+      title: "Savings goal Updated!",
+      description: "Savings goal updated successfully.",
     });
   };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>Add Savings Goal</Button>
+        <Button>Edit Savings Goal</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Add New Savings Goal</DialogTitle>
+          <DialogTitle>Edit Savings Goal</DialogTitle>
           <DialogDescription>
             Please enter the details of the new savings goal.
           </DialogDescription>
@@ -158,4 +162,4 @@ const AddSavingGoal = (props: SavingsGoalsProps) => {
   );
 };
 
-export default AddSavingGoal;
+export default EditSavingGoal;

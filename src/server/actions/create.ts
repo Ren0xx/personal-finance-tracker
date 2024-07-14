@@ -5,18 +5,9 @@ import { revalidatePath } from "next/cache";
 import { type RouterInputs } from "@/trpc/react";
 type AddBudget = RouterInputs["budget"]["createOne"];
 type AddTransaction = RouterInputs["transaction"]["createOne"];
-export async function createSavingsGoal(
-  name: string,
-  targetAmount: number,
-  deadline?: Date,
-  currentAmount?: number,
-) {
-  await api.savingsGoal.createOne({
-    name,
-    targetAmount,
-    deadline,
-    currentAmount,
-  });
+type AddSavingsGoal = RouterInputs["savingsGoal"]["createOne"];
+export async function createSavingsGoal(addSavingsGoal: AddSavingsGoal) {
+  await api.savingsGoal.createOne(addSavingsGoal);
   revalidatePath("/savings-goals", "page");
 }
 

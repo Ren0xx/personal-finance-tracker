@@ -35,9 +35,36 @@ export const savingsGoalRouter = createTRPCRouter({
   }),
   getOne: protectedProcedure
     .input(z.object({ name: z.string() }))
-    .query(({ ctx, input }) => {
-      return ctx.db.savingsGoal.findFirst({
+    .query(async ({ ctx, input }) => {
+      const goal = await ctx.db.savingsGoal.findFirst({
         where: { name: input.name, userId: ctx.session.user.id },
+      });
+      const goalsNames = await ctx.db.savingsGoal.findMany({
+        where: { userId: ctx.session.user.id },
+        select: { name: true },
+      });
+      const alreadyTakenNames = goalsNames.map((goal) => goal.name);
+      return { ...goal, alreadyTakenNames };
+    }),
+  updateOne: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        name: z.string(),
+        targetAmount: z.number(),
+        currentAmount: z.number().optional(),
+        deadline: z.date().optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db.savingsGoal.update({
+        where: { id: input.id },
+        data: {
+          name: input.name,
+          targetAmount: input.targetAmount,
+          currentAmount: input.currentAmount,
+          deadline: input.deadline,
+        },
       });
     }),
 });
