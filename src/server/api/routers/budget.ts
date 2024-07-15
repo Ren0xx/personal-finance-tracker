@@ -38,4 +38,12 @@ export const budgetRouter = createTRPCRouter({
       include: { categories: true },
     });
   }),
+  getOne: protectedProcedure
+    .input(z.object({ name: z.string() }))
+    .query(({ ctx, input }) => {
+      return ctx.db.budget.findFirst({
+        where: { name: input.name, userId: ctx.session.user.id },
+        include: { categories: true },
+      });
+    }),
 });

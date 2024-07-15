@@ -20,6 +20,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { useRouter } from "next/navigation";
 
 const chartConfig = {
   value: {
@@ -36,8 +37,22 @@ type BudgetData = {
 type BarChartComponentProps = {
   data: BudgetData[];
 };
+type Payload = {
+  label: string;
+  value: number;
+  [key: string]: number | string;
+};
 
+type ClickEvent = {
+  payload: Payload;
+  [key: string]: Payload;
+};
 function BarChart({ data }: BarChartComponentProps) {
+  const router = useRouter();
+  const handleBarClick = (e: ClickEvent) => {
+    const { payload } = e;
+    router.push(`/budgets/${payload.label}`);
+  };
   return (
     <Card>
       <CardHeader>
@@ -58,7 +73,13 @@ function BarChart({ data }: BarChartComponentProps) {
               cursor={false}
               content={<ChartTooltipContent hideLabel />}
             />
-            <Bar dataKey="value" fill="var(--color-value)" radius={8}>
+            <Bar
+              className="cursor-pointer"
+              dataKey="value"
+              fill="var(--color-value)"
+              radius={8}
+              onClick={handleBarClick}
+            >
               <LabelList
                 position="top"
                 offset={12}
