@@ -61,7 +61,7 @@ const EditSavingGoal = ({ savingsGoal }: SavingsGoalsProps) => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const { name, targetAmount, deadline, currentAmount } = values;
     await updateSavingsGoal({
-      id: savingsGoal?.id ?? "",
+      id: savingsGoal.id!, 
       name,
       targetAmount: parseFloat(targetAmount),
       deadline,

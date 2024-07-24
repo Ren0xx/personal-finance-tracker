@@ -40,10 +40,40 @@ export const budgetRouter = createTRPCRouter({
   }),
   getOne: protectedProcedure
     .input(z.object({ name: z.string() }))
-    .query(({ ctx, input }) => {
-      return ctx.db.budget.findFirst({
+    .query(async ({ ctx, input }) => {
+      const budget = await ctx.db.budget.findFirst({
         where: { name: input.name, userId: ctx.session.user.id },
-        include: { categories: true },
+      });
+      const budgetNames = await ctx.db.budget.findMany({
+        where: { userId: ctx.session.user.id },
+        select: { name: true },
+      });
+      const alreadyTakenNames = budgetNames.map((goal) => goal.name);
+      return { ...budget, alreadyTakenNames };
+    }),
+  updateOne: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        name: z.string(),
+        description: z.string().optional(),
+        categoryId: z.string(),
+        amount: z.number(),
+        startDate: z.date(),
+        endDate: z.date(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db.budget.update({
+        where: { id: input.id },
+        data: {
+          name: input.name,
+          description: input.description,
+          categoryId: input.categoryId,
+          amount: input.amount,
+          startDate: input.startDate,
+          endDate: input.endDate,
+        },
       });
     }),
 });
