@@ -2,7 +2,7 @@ import { api } from "@/trpc/server";
 import { H1 } from "@/components/ui/typography";
 import AddBudgetForm from "@/components/forms/AddBudgetForm";
 import RemoveBudgetForm from "@/components/forms/RemoveBudgetForm";
-import BarChart from "@/components/charts/BarChart";
+import BarChart from "@/components/charts/BarChartBudgets";
 
 export default async function Budgets() {
   const categoriesData = api.category.getAll();

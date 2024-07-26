@@ -79,6 +79,7 @@ function BarChart({ data }: BarChartComponentProps) {
               fill="var(--color-value)"
               radius={8}
               onClick={handleBarClick}
+              maxBarSize={150}
             >
               <LabelList
                 position="top"

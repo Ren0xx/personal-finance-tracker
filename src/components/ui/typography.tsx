@@ -1,13 +1,20 @@
 // components/Typography.tsx
+import { cn } from "@/lib/utils";
 import { type ReactNode } from "react";
 
 interface TypographyProps {
   children: ReactNode;
+  className?: string;
 }
 
-export function H1({ children }: TypographyProps) {
+export function H1({ children, className }: TypographyProps) {
   return (
-    <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
+    <h1
+      className={cn(
+        "scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl",
+        className,
+      )}
+    >
       {children}
     </h1>
   );
