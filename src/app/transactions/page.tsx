@@ -3,6 +3,7 @@ import TransactionsList from "@/components/Transactions";
 import PieChartTransactions from "@/components/charts/PieChartTransactions";
 import dynamic from "next/dynamic";
 import { api } from "@/trpc/server";
+import { TransactionsBarChart } from "@/components/charts/BarChartTransactionsMonthly";
 const RemoveTransactionForm = dynamic(
   () => import("@/components/forms/RemoveTransactionForm"),
 );
@@ -21,8 +22,9 @@ export default async function Transactions() {
   return (
     <div>
       <H1>Transactions</H1>
-      <PieChartTransactions transactions={transactions} />
       <TransactionsList transactions={transactions} />
+      <TransactionsBarChart transactions={transactions} />
+      <PieChartTransactions transactions={transactions} />
       <AddTransactionForm categories={categories} />
       <RemoveTransactionForm transactions={transactions} />
     </div>
