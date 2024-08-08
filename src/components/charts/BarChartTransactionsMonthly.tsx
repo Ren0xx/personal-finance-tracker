@@ -10,20 +10,30 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { type RouterOutputs } from "@/trpc/react";
-import { type ChartConfig, ChartContainer } from "@/components/ui/chart";
+import {
+  type ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
 type Transaction = RouterOutputs["transaction"]["getAll"][0];
 type BarChartProps = {
   transactions: Transaction[];
 };
 
 const chartConfig = {
-  transactions: {
-    label: "Transactions",
+  incomes: {
+    label: "Incomes",
     color: "hsl(var(--chart-1))",
+  },
+  expenses: {
+    label: "Expenses",
+    color: "hsl(var(--chart-5))",
   },
 } satisfies ChartConfig;
 
 const formatData = (transactions: Transaction[]) => {
+  console.log(transactions);
   return transactions.reduce(
     (acc, transaction) => {
       const month = transaction.date.toLocaleString("default", {
@@ -33,16 +43,16 @@ const formatData = (transactions: Transaction[]) => {
       let monthData = acc.find((item) => item.month === month);
 
       if (!monthData) {
-        monthData = { month, income: 0, expense: 10 };
+        monthData = { month, income: 0, expense: 0 };
         acc.push(monthData);
       }
 
       if (Number(transaction.amount) >= 0) {
         monthData.income += Number(transaction.amount);
-        //     monthData.expense += Math.abs(transaction.amount.toNumber());
-        //   }
-        //   } else {
+      } else {
+        monthData.expense += Math.abs(Number(transaction.amount));
       }
+
       return acc;
     },
     [] as { month: string; income: number; expense: number }[],
@@ -66,10 +76,22 @@ export function TransactionsBarChart({ transactions }: BarChartProps) {
           >
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="month" />
+            <ChartTooltip
+              cursor={false}
+              content={<ChartTooltipContent hideLabel />}
+            />
             <YAxis />
             <Legend />
-            <Bar dataKey="income" fill="var(--color-income)" name="Income" />
-            <Bar dataKey="expense" fill="var(--color-expense)" name="Expense" />
+            <Bar
+              dataKey="income"
+              fill="var(--color-incomes)"
+              name="Incomes"
+            ></Bar>
+            <Bar
+              dataKey="expense"
+              fill="var(--color-expenses)"
+              name="Expenses"
+            />
           </BarChart>
         </ChartContainer>
       </CardContent>
