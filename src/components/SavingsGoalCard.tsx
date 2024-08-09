@@ -49,7 +49,7 @@ const SavingsGoalCard = ({ savingsGoal }: SavingsGoalCardProps) => {
     {
       name: "Remaining",
       value: 100 - percentageAchieved,
-      fill: "var(--color-muted)",
+      fill: "hsl(var(--ring))", 
     },
   ];
 
