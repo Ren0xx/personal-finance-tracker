@@ -5,7 +5,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -61,12 +60,11 @@ const formatData = (transactions: Transaction[]) => {
 
 export function TransactionsBarChart({ transactions }: BarChartProps) {
   const chartData = formatData(transactions);
-  console.log(chartData);
   return (
     <Card>
       <CardHeader>
         <CardTitle>Monthly Transactions</CardTitle>
-        <CardDescription>Income and Expenses Overview</CardDescription>
+        <CardDescription>Incomes and Expenses Overview</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
@@ -95,9 +93,6 @@ export function TransactionsBarChart({ transactions }: BarChartProps) {
           </BarChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter>
-        <p>Income and Expenses for each month</p>
-      </CardFooter>
     </Card>
   );
 }

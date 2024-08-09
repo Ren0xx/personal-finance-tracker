@@ -12,6 +12,7 @@ export default async function Budgets() {
     categoriesData,
     budgetsData,
   ]);
+  //TODO Budget names from the server
   const budgetsNames = budgets.map((budget) => budget.name);
   const chartData = budgets.map((budget) => ({
     label: budget.name,

@@ -7,7 +7,6 @@ import { groupBy, map, sumBy } from "lodash";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -56,8 +55,7 @@ function PieChartTransactions({ transactions }: PieChartProps) {
   return (
     <Card className="flex flex-col">
       <CardHeader className="items-center pb-0">
-        <CardTitle>Pie Chart - Transactions by Category</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardTitle>Transactions by category</CardTitle>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer
