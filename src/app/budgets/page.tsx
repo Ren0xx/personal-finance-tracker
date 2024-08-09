@@ -12,9 +12,7 @@ export default async function Budgets() {
     categoriesData,
     budgetsData,
   ]);
-  //TODO Budget names from the server
-  const budgetsNames = budgets.map((budget) => budget.name);
-  const chartData = budgets.map((budget) => ({
+  const chartData = budgets.data.map((budget) => ({
     label: budget.name,
     value: Number(budget.amount),
   }));
@@ -23,8 +21,11 @@ export default async function Budgets() {
     <div>
       <H1>Budget</H1>
       <BarChart data={chartData} />
-      <AddBudgetForm categories={categories} budgetsNames={budgetsNames} />
-      <RemoveBudgetForm budgets={budgets} />
+      <AddBudgetForm
+        categories={categories}
+        budgetsNames={budgets.alreadyTakenNames}
+      />
+      <RemoveBudgetForm budgets={budgets.data} />
     </div>
   );
 }

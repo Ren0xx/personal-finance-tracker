@@ -34,7 +34,7 @@ import {
 } from "@/components/ui/select";
 import { deleteBudget } from "@/server/actions/delete";
 import { useToast } from "@/components/ui/use-toast";
-type Budget = RouterOutputs["budget"]["getAll"][0];
+type Budget = RouterOutputs["budget"]["getAll"]["data"][0];
 type RemoveBudgetFormProps = {
   budgets: Budget[];
 };
@@ -118,7 +118,9 @@ const RemoveBudgetForm = (props: RemoveBudgetFormProps) => {
                   </FormItem>
                 )}
               />
-              <Button type="submit" disabled={isSubmitting}>Delete</Button>
+              <Button type="submit" disabled={isSubmitting}>
+                Delete
+              </Button>
             </form>
           </Form>
         </DialogContent>

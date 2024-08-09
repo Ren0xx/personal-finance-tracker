@@ -28,10 +28,12 @@ export const savingsGoalRouter = createTRPCRouter({
       return ctx.db.savingsGoal.delete({ where: { id: input.id } });
     }),
 
-  getAll: protectedProcedure.query(({ ctx }) => {
-    return ctx.db.savingsGoal.findMany({
+  getAll: protectedProcedure.query(async ({ ctx }) => {
+    const savingsGoals = await ctx.db.savingsGoal.findMany({
       where: { userId: ctx.session.user.id },
     });
+    const alreadyTakenNames = savingsGoals.map((goal) => goal.name);
+    return { data: savingsGoals, alreadyTakenNames };
   }),
   getOne: protectedProcedure
     .input(z.object({ name: z.string() }))

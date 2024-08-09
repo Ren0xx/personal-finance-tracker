@@ -32,11 +32,16 @@ export const budgetRouter = createTRPCRouter({
       return ctx.db.budget.delete({ where: { id: input.id } });
     }),
 
-  getAll: protectedProcedure.query(({ ctx }) => {
-    return ctx.db.budget.findMany({
+  getAll: protectedProcedure.query(async ({ ctx }) => {
+    const budgets = await ctx.db.budget.findMany({
       where: { userId: ctx.session.user.id },
       include: { categories: true },
     });
+    const alreadyTakenNames = budgets.map((budget) => budget.name);
+    return {
+      data: budgets,
+      alreadyTakenNames,
+    };
   }),
   getOne: protectedProcedure
     .input(z.object({ name: z.string() }))
@@ -48,7 +53,7 @@ export const budgetRouter = createTRPCRouter({
         where: { userId: ctx.session.user.id },
         select: { name: true },
       });
-      const alreadyTakenNames = budgetNames.map((goal) => goal.name);
+      const alreadyTakenNames = budgetNames.map((budget) => budget.name);
       return { ...budget, alreadyTakenNames };
     }),
   updateOne: protectedProcedure
