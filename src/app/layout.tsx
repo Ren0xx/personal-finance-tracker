@@ -1,5 +1,5 @@
 import "@/styles/globals.css";
-import { memo, cache } from "react";
+import { memo } from "react";
 import { ThemeProvider } from "@/components/theme-provider";
 import { TRPCReactProvider } from "@/trpc/react";
 import SessionWrapper from "@/components/SessionWrapper";
@@ -21,7 +21,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const authSession = cache(async () => await getServerAuthSession());
+  const authSession = await getServerAuthSession();
 
   return (
     <SessionWrapper>

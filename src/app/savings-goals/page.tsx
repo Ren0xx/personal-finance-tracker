@@ -9,8 +9,10 @@ export default async function SavingsGoals() {
   return (
     <div>
       <H1>Savings Goals</H1>
-      <AddSavingsGoal savingsGoalsNames={savingsGoals.alreadyTakenNames} />
-      <RemoveSavingsGoalForm savingsGoals={savingsGoals.data} />
+      <div className="my-16 flex justify-center gap-4">
+        <AddSavingsGoal savingsGoalsNames={savingsGoals.alreadyTakenNames} />
+        <RemoveSavingsGoalForm savingsGoals={savingsGoals.data} />
+      </div>
       <SavingsGoalsList savingsGoals={savingsGoals.data} />
     </div>
   );

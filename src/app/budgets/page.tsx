@@ -21,11 +21,13 @@ export default async function Budgets() {
     <div>
       <H1>Budget</H1>
       <BarChart data={chartData} />
-      <AddBudgetForm
-        categories={categories}
-        budgetsNames={budgets.alreadyTakenNames}
-      />
-      <RemoveBudgetForm budgets={budgets.data} />
+      <div className="my-16 flex justify-center gap-4">
+        <AddBudgetForm
+          categories={categories}
+          budgetsNames={budgets.alreadyTakenNames}
+        />
+        <RemoveBudgetForm budgets={budgets.data} />
+      </div>
     </div>
   );
 }

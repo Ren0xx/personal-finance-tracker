@@ -57,7 +57,7 @@ const UpdateNameForm = (props: UpdateNameFormProps) => {
             </FormItem>
           )}
         />
-        <Button type="submit">Change name</Button>
+        <Button type="submit">Submit</Button>
       </form>
     </Form>
   );

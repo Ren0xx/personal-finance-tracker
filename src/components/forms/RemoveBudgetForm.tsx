@@ -77,7 +77,7 @@ const RemoveBudgetForm = (props: RemoveBudgetFormProps) => {
     <>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button>Delete Budget</Button>
+          <Button variant="destructive">Delete Budget</Button>
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>

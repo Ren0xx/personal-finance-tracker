@@ -15,4 +15,13 @@ export const userRouter = createTRPCRouter({
   deleteAccount: protectedProcedure.mutation(async ({ ctx }) => {
     return ctx.db.user.delete({ where: { id: ctx.session.user.id } });
   }),
+  deleteAllData: protectedProcedure.mutation(async ({ ctx }) => {
+    const userId = ctx.session.user.id;
+
+    await ctx.db.transaction.deleteMany({ where: { userId } });
+    await ctx.db.category.deleteMany({ where: { userId } });
+    await ctx.db.budget.deleteMany({ where: { id: userId } });
+
+    return { success: true };
+  }),
 });

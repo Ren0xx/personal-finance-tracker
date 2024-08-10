@@ -24,3 +24,7 @@ export async function deleteTransaction(id: string) {
   revalidatePath("/transactions", "page");
   revalidatePath("/categories/[categoryId]", "page");
 }
+export async function deleteAllUserData() {
+  await api.user.deleteAllData();
+  redirect("/");
+}

@@ -4,12 +4,7 @@ import { Label, Pie, PieChart as Chart, Tooltip } from "recharts";
 import { type RouterOutputs } from "@/trpc/react";
 type Transaction = RouterOutputs["transaction"]["getAll"][0];
 import { groupBy, map, sumBy } from "lodash";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { type ChartConfig, ChartContainer } from "@/components/ui/chart";
 
 type PieChartProps = {
@@ -41,7 +36,12 @@ function PieChartTransactions({ transactions }: PieChartProps) {
     );
     return map(grouped, (items, category) => ({
       category,
-      amount: sumBy(items, (item) => Number(item.amount)),
+      amount: sumBy(items, (item) => {
+        if (Number(item.amount) > 0) {
+          return Number(item.amount);
+        }
+        return 0;
+      }),
     })).map((item, index) => ({
       ...item,
       fill: getColor(index),
@@ -55,7 +55,7 @@ function PieChartTransactions({ transactions }: PieChartProps) {
   return (
     <Card className="flex flex-col">
       <CardHeader className="items-center pb-0">
-        <CardTitle>Transactions by category</CardTitle>
+        <CardTitle>Money earned on each category</CardTitle>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer

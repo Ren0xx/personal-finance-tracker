@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { deleteSavingsGoalSchema } from "@/schemas/savingsGoal";
 
 import { type RouterOutputs } from "@/trpc/react";
-type SavingsGoal = RouterOutputs["savingsGoal"]["getAll"][0];
+type SavingsGoal = RouterOutputs["savingsGoal"]["getAll"]["data"][0];
 
 import { useForm, useFormState } from "react-hook-form";
 import { type z } from "zod";
@@ -81,7 +81,7 @@ const RemoveSavingsGoalForm = (props: SavingsGoalsProps) => {
     <>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button>Delete Savings Goal</Button>
+          <Button variant="destructive">Delete Savings Goal</Button>
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
