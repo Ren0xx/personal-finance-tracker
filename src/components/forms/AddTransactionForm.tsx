@@ -37,6 +37,7 @@ import {
 } from "@/components/ui/select";
 import { createTransaction } from "@/server/actions/create";
 import { useToast } from "@/components/ui/use-toast";
+import Link from "next/link";
 type AddTransactionForm = {
   categories: Category[];
 };
@@ -99,11 +100,17 @@ const AddTransactionForm = (props: AddTransactionForm) => {
                       <SelectContent>
                         <SelectGroup>
                           <SelectLabel>Choose category</SelectLabel>
-                          {categories?.map((category) => (
-                            <SelectItem key={category.id} value={category.id}>
-                              {category.name}
-                            </SelectItem>
-                          ))}
+                          {categories?.length ? (
+                            categories.map((category) => (
+                              <SelectItem key={category.id} value={category.id}>
+                                {category.name}
+                              </SelectItem>
+                            ))
+                          ) : (
+                            <Button asChild variant="link">
+                              <Link href="/categories">Don&apos;t see any? Create new one!</Link>
+                            </Button>
+                          )}
                         </SelectGroup>
                       </SelectContent>
                     </Select>

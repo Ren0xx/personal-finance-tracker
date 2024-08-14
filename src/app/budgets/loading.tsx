@@ -1,5 +1,8 @@
-import { H1 } from "@/components/ui/typography";
-
+import { SkeletonBudgetsChart } from "@/components/skeletons/ChartsSkeletons";
 export default function Loading() {
-  return <H1>Loading...</H1>;
+  return (
+    <div>
+      <SkeletonBudgetsChart />
+    </div>
+  );
 }

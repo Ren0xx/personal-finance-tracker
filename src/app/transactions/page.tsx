@@ -1,13 +1,16 @@
 import { H1 } from "@/components/ui/typography";
-import TransactionsList from "@/components/Transactions";
 import PieChartTransactions from "@/components/charts/PieChartTransactions";
 import dynamic from "next/dynamic";
 import { api } from "@/trpc/server";
 import { TransactionsBarChart } from "@/components/charts/BarChartTransactionsMonthly";
-
+import TransactionsList from "@/components/Transactions";
 const AddTransactionForm = dynamic(
   () => import("@/components/forms/AddTransactionForm"),
+  {
+    loading: () => <div>Loading...</div>,
+  }
 );
+
 export default async function Transactions() {
   const categoriesData = api.category.getAll();
   const transactionData = api.transaction.getAll();
@@ -18,7 +21,7 @@ export default async function Transactions() {
   ]);
 
   return (
-    <div className="flex flex-col gap-4 ">
+    <div className="flex flex-col gap-4 text-center">
       <H1>Your Transactions</H1>
       <TransactionsList transactions={transactions} />
       <AddTransactionForm categories={categories} />

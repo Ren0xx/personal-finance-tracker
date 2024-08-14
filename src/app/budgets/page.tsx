@@ -18,8 +18,8 @@ export default async function Budgets() {
   }));
 
   return (
-    <div>
-      <H1>Budget</H1>
+    <div className="text-center">
+      <H1 className="my-8">Budget</H1>
       <BarChart data={chartData} />
       <div className="my-16 flex justify-center gap-4">
         <AddBudgetForm

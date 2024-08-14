@@ -94,7 +94,7 @@ function PieChartTransactions({ transactions }: PieChartProps) {
                           y={(viewBox.cy ?? 0) + 24}
                           className="fill-muted-foreground"
                         >
-                          Money spend
+                          Money earned
                         </tspan>
                       </text>
                     );

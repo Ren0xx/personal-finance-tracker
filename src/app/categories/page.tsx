@@ -10,7 +10,7 @@ export default async function Categories() {
   const categoriesNames = categories.map((category) => category.name);
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 text-center">
       <H1>Categories</H1>
       <CategoriesList categories={categories} />
       <AddCategoryForm categoriesNames={categoriesNames} />
