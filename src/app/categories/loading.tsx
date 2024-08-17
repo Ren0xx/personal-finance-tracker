@@ -1,5 +1,11 @@
+import CategoriesSkeleton from "@/components/skeletons/CategoriesSkeleton";
 import { H1 } from "@/components/ui/typography";
 
 export default function Loading() {
-  return <H1>Loading...</H1>;
+  return (
+    <div className="text-center">
+      <H1 className="mb-8">Categories</H1>
+      <CategoriesSkeleton />
+    </div>
+  );
 }
