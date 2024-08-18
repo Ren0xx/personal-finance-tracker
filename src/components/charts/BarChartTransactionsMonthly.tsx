@@ -32,7 +32,6 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 const formatData = (transactions: Transaction[]) => {
-  console.log(transactions);
   return transactions.reduce(
     (acc, transaction) => {
       const month = transaction.date.toLocaleString("default", {

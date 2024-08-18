@@ -6,9 +6,9 @@ import { H2 } from "./ui/typography";
 
 const ChartExamplesList = () => {
   return (
-    <div>
+    <div className="my-16">
       <H2>Chart Examples:</H2>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <PieExample />
         <RadialExample />
         <BarExample />
