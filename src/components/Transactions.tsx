@@ -5,6 +5,7 @@ type Transaction = RouterOutputs["transaction"]["getAll"][0];
 import { DataTable } from "@/app/transactions/_components/transactionTable/data-table";
 import { columns } from "@/app/transactions/_components/transactionTable/columns";
 
+
 type TransactionsListProps = {
   transactions: Transaction[];
   filteringHidden?: boolean;

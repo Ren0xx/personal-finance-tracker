@@ -1,6 +1,10 @@
 "use client";
 import { memo } from "react";
 
+import resolveConfig from "tailwindcss/resolveConfig";
+import tailwindConfig from "tailwind.config";
+const { theme } = resolveConfig(tailwindConfig);
+
 import SideNav from "@/components/SideNav";
 import BottomNav from "@/components/BottomNav";
 import NotLoggedIn from "@/components/NotLoggedIn";
@@ -21,13 +25,14 @@ export default function MainLayout({
   children: React.ReactNode;
   session: Session | null;
 }) {
-  const isMobile = useMediaQuery("(max-width: 768px)");
+  const width = theme.screens.md;
+  const isMobile = useMediaQuery(`(max-width: ${width})`);
   return (
-    <div className="container my-4">
+    <div className="container">
       {!session ? (
         <MemoizedNotLoggedIn />
       ) : (
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-6">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-6 mb-16 mt-6">
           {!isMobile && <MemoizedSideNav />}
           <main className={"col-span-1 md:col-span-5"}>{children}</main>
           {isMobile && <MemoizedBottomNav />}

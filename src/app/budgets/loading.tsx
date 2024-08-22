@@ -1,5 +1,6 @@
 import { SkeletonBudgetsChart } from "@/components/skeletons/ChartsSkeletons";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator"
 import { H1 } from "@/components/ui/typography";
 export default function Loading() {
   return (
@@ -13,6 +14,8 @@ export default function Loading() {
           Delete Budget
         </Button>
       </div>
+        <Separator className="my-4" />
+        <Button disabled={true}>Export Data To CSV</Button>
     </div>
   );
 }

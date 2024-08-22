@@ -1,3 +1,4 @@
+import ExportToCsvButton from "@/components/ExportToCsvButton";
 import AddSavingsGoal from "@/components/forms/AddSavingsGoal";
 import RemoveSavingsGoalForm from "@/components/forms/RemoveSavingsGoal";
 import SavingsGoalsList from "@/components/SavingsGoals";
@@ -14,6 +15,7 @@ export default async function SavingsGoals() {
         <RemoveSavingsGoalForm savingsGoals={savingsGoals.data} />
       </div>
       <SavingsGoalsList savingsGoals={savingsGoals.data} />
+      <ExportToCsvButton data={savingsGoals.data} title="Savings_Goals" />
     </div>
   );
 }

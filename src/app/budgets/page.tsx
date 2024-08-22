@@ -1,8 +1,10 @@
 import { api } from "@/trpc/server";
 import { H1 } from "@/components/ui/typography";
+import { Separator } from "@/components/ui/separator"
 import AddBudgetForm from "@/components/forms/AddBudgetForm";
 import RemoveBudgetForm from "@/components/forms/RemoveBudgetForm";
 import BarChart from "@/components/charts/BarChartBudgets";
+import ExportToCsvButton from "@/components/ExportToCsvButton";
 
 export default async function Budgets() {
   const categoriesData = api.category.getAll();
@@ -28,6 +30,8 @@ export default async function Budgets() {
         />
         <RemoveBudgetForm budgets={budgets.data} />
       </div>
+      <Separator className="my-4"/>
+      <ExportToCsvButton data={budgets.data} title="Budgets" />
     </div>
   );
 }
