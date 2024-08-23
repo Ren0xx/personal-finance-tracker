@@ -17,6 +17,7 @@ const MemoizedNotLoggedIn = memo(NotLoggedIn);
 const MemoizedBottomNav = memo(BottomNav);
 
 import type { Session } from "next-auth";
+import Footer from "@/components/Footer";
 
 export default function MainLayout({
   children,
@@ -32,11 +33,12 @@ export default function MainLayout({
       {!session ? (
         <MemoizedNotLoggedIn />
       ) : (
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-6 mb-16 mt-6">
+        <div className="mb-16 mt-6 grid grid-cols-1 gap-4 md:grid-cols-6">
           {!isMobile && <MemoizedSideNav />}
           <main className={"col-span-1 md:col-span-5"}>{children}</main>
           {isMobile && <MemoizedBottomNav />}
-          <Toaster />
+          <Footer />
+          <Toaster /> 
         </div>
       )}
     </div>
