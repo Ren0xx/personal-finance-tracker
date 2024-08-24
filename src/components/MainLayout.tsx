@@ -33,13 +33,15 @@ export default function MainLayout({
       {!session ? (
         <MemoizedNotLoggedIn />
       ) : (
-        <div className="mb-16 mt-6 grid grid-cols-1 gap-4 md:grid-cols-6">
-          {!isMobile && <MemoizedSideNav />}
-          <main className={"col-span-1 md:col-span-5"}>{children}</main>
-          {isMobile && <MemoizedBottomNav />}
-          <Footer />
-          <Toaster /> 
-        </div>
+        <>
+          <div className="mb-16 mt-6 grid min-h-dvh grid-cols-1 gap-4 md:mb-0  md:grid-cols-6">
+            {!isMobile && <MemoizedSideNav />}
+            <main className="col-span-1 mb-auto md:col-span-5">{children}</main>
+            <Footer />
+            {isMobile && <MemoizedBottomNav />}
+          </div>
+          <Toaster />
+        </>
       )}
     </div>
   );
