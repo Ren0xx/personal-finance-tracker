@@ -77,6 +77,10 @@
   }
 }
 
+.reactour__popover {
+  background-color: hsl(var(--popover)) !important;
+}
+
 @layer base {
   * {
     @apply border-border;

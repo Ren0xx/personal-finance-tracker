@@ -37,6 +37,6 @@
     "**/*.cjs",
     "**/*.js",
     ".next/types/**/*.ts"
-, "src/hooks/u"  ],
+, "src/hooks/u", "src/config/tourSteps.tss"  ],
   "exclude": ["node_modules"]
 }

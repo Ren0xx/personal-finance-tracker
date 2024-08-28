@@ -19,6 +19,7 @@ const MemoizedBottomNav = memo(BottomNav);
 import type { Session } from "next-auth";
 import Footer from "@/components/Footer";
 
+import TourWrapper from "@/components/TourWrapper";
 export default function MainLayout({
   children,
   session,
@@ -33,7 +34,7 @@ export default function MainLayout({
       {!session ? (
         <MemoizedNotLoggedIn />
       ) : (
-        <>
+        <TourWrapper>
           <div className="mb-16 mt-6 grid min-h-dvh grid-cols-1 gap-4 md:mb-0  md:grid-cols-6">
             {!isMobile && <MemoizedSideNav />}
             <main className="col-span-1 mb-auto md:col-span-5">{children}</main>
@@ -41,7 +42,7 @@ export default function MainLayout({
             {isMobile && <MemoizedBottomNav />}
           </div>
           <Toaster />
-        </>
+        </TourWrapper>
       )}
     </div>
   );
