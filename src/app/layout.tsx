@@ -1,7 +1,7 @@
 import "@/styles/globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { TRPCReactProvider } from "@/trpc/react";
-import SessionWrapper from "@/components/SessionWrapper";
+import SessionWrapper from "@/components/Wrappers/SessionWrapper";
 import { getServerAuthSession } from "@/server/auth";
 import MainLayout from "@/components/MainLayout";
 export const metadata = {

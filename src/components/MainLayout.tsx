@@ -19,7 +19,7 @@ const MemoizedBottomNav = memo(BottomNav);
 import type { Session } from "next-auth";
 import Footer from "@/components/Footer";
 
-import TourWrapper from "@/components/TourWrapper";
+import TourWrapper from "@/components/Wrappers/TourWrapper";
 export default function MainLayout({
   children,
   session,

@@ -5,6 +5,7 @@ import { api } from "@/trpc/server";
 import { TransactionsBarChart } from "@/components/charts/BarChartTransactionsMonthly";
 import TransactionsList from "@/components/Transactions";
 import ExportToCsvButton from "@/components/ExportToCsvButton";
+import { BasicPageTransition } from "@/components/Animations/PageTransitions";
 const AddTransactionForm = dynamic(
   () => import("@/components/forms/AddTransactionForm"),
   {
@@ -22,13 +23,15 @@ export default async function Transactions() {
   ]);
 
   return (
-    <div className="flex flex-col gap-4 text-center">
-      <H1 className="mb-8">Your Transactions</H1>
-      <AddTransactionForm categories={categories} />
-      <TransactionsList transactions={transactions} />
-      <ExportToCsvButton data={transactions} title="Transactions" />
-      <TransactionsBarChart transactions={transactions} />
-      <PieChartTransactions transactions={transactions} />
-    </div>
+    <BasicPageTransition>
+      <div className="flex flex-col gap-4 text-center">
+        <H1 className="mb-8">Your Transactions</H1>
+        <AddTransactionForm categories={categories} />
+        <TransactionsList transactions={transactions} />
+        <ExportToCsvButton data={transactions} title="Transactions" />
+        <TransactionsBarChart transactions={transactions} />
+        <PieChartTransactions transactions={transactions} />
+      </div>
+    </BasicPageTransition>
   );
 }

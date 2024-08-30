@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { hrefs } from "@/utils/navigation";
+import { hrefs } from "@/utils/navigationData";
 import { H4 } from "@/components/ui/typography";
 import { useTour } from "@reactour/tour";
 import useTourStatus from "@/hooks/useTourStatus";
@@ -27,7 +27,9 @@ const SideNav = () => {
           <H4>{name}</H4>
         </Link>
       ))}
-      <Button size='sm' onClick={() => setIsOpen(true)}>Open Tour</Button>
+      <Button size="sm" onClick={() => setIsOpen(true)}>
+        Open Tour
+      </Button>
     </nav>
   );
 };
