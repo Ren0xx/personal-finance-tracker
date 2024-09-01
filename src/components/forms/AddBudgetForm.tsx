@@ -31,6 +31,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { AnimatedFormOpen } from "@/components/Animations/FormAnimation";
 
 import { type z } from "zod";
 import { type RouterOutputs } from "@/trpc/react";
@@ -97,7 +98,10 @@ const AddBudgetForm = (props: AddBudgetFormProps) => {
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <AnimatedFormOpen
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-8"
+          >
             <FormField
               control={form.control}
               name="name"
@@ -183,7 +187,7 @@ const AddBudgetForm = (props: AddBudgetFormProps) => {
             <Button type="submit" disabled={isSubmitting}>
               Create Budget
             </Button>
-          </form>
+          </AnimatedFormOpen>
         </Form>
       </DialogContent>
     </Dialog>

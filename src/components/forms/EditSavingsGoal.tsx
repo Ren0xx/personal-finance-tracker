@@ -26,6 +26,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { AnimatedFormOpen } from "@/components/Animations/FormAnimation";
 import { DatePicker } from "@/components/datepickers/DatePicker";
 import { useToast } from "@/components/ui/use-toast";
 
@@ -78,7 +79,7 @@ const EditSavingGoal = ({ savingsGoal }: SavingsGoalsProps) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>Edit Savings Goal</Button>
+        <Button className="self-center">Edit Savings Goal</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -89,7 +90,7 @@ const EditSavingGoal = ({ savingsGoal }: SavingsGoalsProps) => {
         </DialogHeader>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <AnimatedFormOpen onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
               control={form.control}
               name="name"
@@ -155,7 +156,7 @@ const EditSavingGoal = ({ savingsGoal }: SavingsGoalsProps) => {
             <Button type="submit" disabled={isSubmitting}>
               Submit
             </Button>
-          </form>
+          </AnimatedFormOpen>
         </Form>
       </DialogContent>
     </Dialog>

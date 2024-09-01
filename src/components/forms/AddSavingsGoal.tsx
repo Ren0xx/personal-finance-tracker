@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { DatePicker } from "@/components/datepickers/DatePicker";
+import { AnimatedFormOpen } from "@/components/Animations/FormAnimation";
 import { useToast } from "@/components/ui/use-toast";
 
 import { createSavingsGoal } from "@/server/actions/create";
@@ -85,7 +86,7 @@ const AddSavingGoal = (props: SavingsGoalsProps) => {
         </DialogHeader>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <AnimatedFormOpen onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
               control={form.control}
               name="name"
@@ -151,7 +152,7 @@ const AddSavingGoal = (props: SavingsGoalsProps) => {
             <Button type="submit" disabled={isSubmitting}>
               Submit
             </Button>
-          </form>
+          </AnimatedFormOpen>
         </Form>
       </DialogContent>
     </Dialog>

@@ -31,6 +31,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { AnimatedFormOpen } from "@/components/Animations/FormAnimation";
 
 import { type z } from "zod";
 import { type RouterOutputs } from "@/trpc/react";
@@ -73,7 +74,7 @@ const EditBudgetForm = ({ budget, categories }: AddBudgetFormProps) => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     await updateBudget({
-      id: budget.id!, 
+      id: budget.id!,
       name: values.name,
       amount: parseFloat(values.amount),
       description: values.description,
@@ -92,7 +93,7 @@ const EditBudgetForm = ({ budget, categories }: AddBudgetFormProps) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>Edit Budget</Button>
+        <Button className="self-center">Edit Budget</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -102,7 +103,10 @@ const EditBudgetForm = ({ budget, categories }: AddBudgetFormProps) => {
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <AnimatedFormOpen
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-8"
+          >
             <FormField
               control={form.control}
               name="name"
@@ -188,7 +192,7 @@ const EditBudgetForm = ({ budget, categories }: AddBudgetFormProps) => {
             <Button type="submit" disabled={isSubmitting}>
               Update Budget
             </Button>
-          </form>
+          </AnimatedFormOpen>
         </Form>
       </DialogContent>
     </Dialog>

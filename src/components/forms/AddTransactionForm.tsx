@@ -35,6 +35,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { AnimatedFormOpen } from "@/components/Animations/FormAnimation";
 import { createTransaction } from "@/server/actions/create";
 import { useToast } from "@/components/ui/use-toast";
 import Link from "next/link";
@@ -85,7 +86,7 @@ const AddTransactionForm = (props: AddTransactionForm) => {
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <AnimatedFormOpen onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
               control={form.control}
               name="categoryId"
@@ -149,7 +150,7 @@ const AddTransactionForm = (props: AddTransactionForm) => {
             <Button type="submit" disabled={isSubmitting}>
               Create Transaction
             </Button>
-          </form>
+          </AnimatedFormOpen>
         </Form>
       </DialogContent>
     </Dialog>

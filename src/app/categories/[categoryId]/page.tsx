@@ -2,6 +2,7 @@ import TransactionsList from "@/components/Transactions";
 import { H1 } from "@/components/ui/typography";
 import { notFound } from "next/navigation";
 import { api } from "@/trpc/server";
+import { BasicPageTransition } from "@/components/Animations/PageTransitions";
 export default async function Category({
   params,
 }: {
@@ -13,12 +14,12 @@ export default async function Category({
     notFound();
   }
   return (
-    <>
+    <BasicPageTransition>
       <H1>Transactions for category: {category.name}</H1>
       <TransactionsList
         transactions={category.transactions}
         filteringHidden={true}
       />
-    </>
+    </BasicPageTransition>
   );
 }

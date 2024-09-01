@@ -22,6 +22,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { AnimatedFormOpen } from "@/components/Animations/FormAnimation";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import { createCategory } from "@/server/actions/create";
@@ -69,7 +70,10 @@ const AddCategoryForm = (props: AddCategoryFormProps) => {
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <AnimatedFormOpen
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-8"
+          >
             <FormField
               control={form.control}
               name="name"
@@ -83,8 +87,10 @@ const AddCategoryForm = (props: AddCategoryFormProps) => {
                 </FormItem>
               )}
             />
-            <Button type="submit" disabled={isSubmitting}>Submit</Button>
-          </form>
+            <Button type="submit" disabled={isSubmitting}>
+              Submit
+            </Button>
+          </AnimatedFormOpen>
         </Form>
       </DialogContent>
     </Dialog>
