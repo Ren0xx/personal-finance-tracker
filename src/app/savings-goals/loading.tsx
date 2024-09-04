@@ -1,5 +1,5 @@
 import { H1 } from "@/components/ui/typography";
-import SavingsGoalsSkeleton from "@/components/skeletons/SavingsGoalsSkeleton";
+import {SavingsGoalsSkeleton} from "@/components/skeletons/SavingsGoalsSkeleton";
 export default function Loading() {
   return (
     <div className="text-center">

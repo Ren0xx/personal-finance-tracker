@@ -1,5 +1,4 @@
-import { H1 } from "@/components/ui/typography";
-
+import { SavingGoalSkeleton } from "@/components/skeletons/SavingsGoalsSkeleton";
 export default function Loading() {
-  return <H1>Loading...</H1>;
+  return <SavingGoalSkeleton numberOfGoals={1} />;
 }

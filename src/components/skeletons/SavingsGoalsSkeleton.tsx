@@ -1,7 +1,11 @@
 import { Button } from "@/components//ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { H2 } from "@/components/ui/typography";
-const SavingsGoalsSkeleton = () => {
+import { H1, H2 } from "@/components/ui/typography";
+const SavingsGoalsSkeleton = ({
+  numberOfGoals = 3,
+}: {
+  numberOfGoals?: number;
+}) => {
   return (
     <div>
       <div className="my-16 flex justify-center gap-4">
@@ -10,16 +14,37 @@ const SavingsGoalsSkeleton = () => {
           Delete Savings Goal
         </Button>
       </div>
-      {[...Array<number>(3)].map((_, index) => (
-        <Skeleton className="flex flex-col items-center py-8 my-2" key={index}>
-          <Skeleton>
-            <H2>Goal ... </H2>
-          </Skeleton>
-          <Skeleton className="h-48 w-48 rounded-full bg-accent-foreground" />
-        </Skeleton>
-      ))}
+      <CircleChartSkeleton numberOfGoals={numberOfGoals} />
+    </div>
+  );
+};
+const SavingGoalSkeleton = ({
+  numberOfGoals = 3,
+}: {
+  numberOfGoals?: number;
+}) => {
+  return (
+    <div className="text-center">
+      <H1>...</H1>
+      <CircleChartSkeleton numberOfGoals={numberOfGoals} />
+      <Button disabled={true}>Edit Savings Goal</Button>
     </div>
   );
 };
 
-export default SavingsGoalsSkeleton;
+const CircleChartSkeleton = ({
+  numberOfGoals = 3,
+}: {
+  numberOfGoals?: number;
+}) => {
+  return [...Array<number>(numberOfGoals)].map((_, index) => (
+    <Skeleton className="my-2 flex flex-col items-center py-8" key={index}>
+      <Skeleton>
+        <H2>Goal ... </H2>
+      </Skeleton>
+      <Skeleton className="h-48 w-48 rounded-full bg-accent-foreground" />
+    </Skeleton>
+  ));
+};
+
+export { SavingsGoalsSkeleton, SavingGoalSkeleton };

@@ -1,5 +1,7 @@
-import { H1 } from "@/components/ui/typography";
+import { BudgetSkeleton } from "@/components/skeletons/BudgetsSkeleton";
 
 export default function Loading() {
-  return <H1>Loading...</H1>;
+  return (
+    <BudgetSkeleton />
+  )
 }

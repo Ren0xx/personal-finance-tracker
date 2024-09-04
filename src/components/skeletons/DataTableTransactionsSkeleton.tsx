@@ -9,7 +9,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-export function DataTableSkeleton() {
+export function DataTableSkeleton({numberOfRows = 5}: {numberOfRows?: number}) {
   return (
     <div>
       <div className="flex items-center py-4">
@@ -34,7 +34,7 @@ export function DataTableSkeleton() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {Array.from({ length: 5 }, (_, i) => (
+            {Array.from({ length: numberOfRows }, (_, i) => (
               <TableRow key={i}>
                 <TableCell>
                   <Skeleton className="h-6 w-full" />
