@@ -15,7 +15,7 @@ export default async function Profile() {
     return notFound();
   }
   return (
-    <BasicPageTransition className=" flex grow flex-col gap-4 rounded-md bg-card p-4">
+    <BasicPageTransition className="flex grow flex-col gap-4 rounded-md bg-card p-4">
       <section className="col-span-1 flex flex-col gap-2 ">
         <ProfileShowcase name={user.name} image={user.image} />
         <UpdateNameForm currentUserName={user.name ?? ""} />
@@ -24,7 +24,7 @@ export default async function Profile() {
 
       <section className="col-span-1 flex grow flex-col items-center gap-2">
         <ThemeToggle />
-        <H2> Dangerous Section</H2>
+        <H2>Dangerous Section</H2>
         <DeleteWithConfirmForm action={deleteAccount} title="Account" />
         <DeleteWithConfirmForm action={deleteAllUserData} title="All data" />
         <hr />

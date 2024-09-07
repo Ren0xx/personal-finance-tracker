@@ -1,5 +1,8 @@
-import { H1 } from "@/components/ui/typography";
-
+import { ProfileSkeleton } from "@/components/skeletons/ProfileSkeleton";
 export default function Loading() {
-  return <H1>Loading...</H1>;
+  return (
+    <div className="text-center">
+      <ProfileSkeleton />
+    </div>
+  );
 }
