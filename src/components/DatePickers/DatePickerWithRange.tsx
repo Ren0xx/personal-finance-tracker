@@ -17,7 +17,7 @@ type DatePickerWithRangeProps = {
   onChange: () => void;
 };
 
-export default function DatePickerWithRange(props: DatePickerWithRangeProps) {
+const DatePickerWithRange = (props: DatePickerWithRangeProps) => {
   const { from, to, onChange } = props;
   return (
     <Popover modal={true}>
@@ -59,4 +59,5 @@ export default function DatePickerWithRange(props: DatePickerWithRangeProps) {
       </PopoverContent>
     </Popover>
   );
-}
+};
+export default DatePickerWithRange;

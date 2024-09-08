@@ -34,7 +34,7 @@ const chartConfig = {
 const formatData = (transactions: Transaction[]) => {
   return transactions.reduce(
     (acc, transaction) => {
-      const month = transaction.date.toLocaleString("default", {
+      const month = transaction.date.toLocaleString("en-US", {
         month: "short",
         year: "numeric",
       });

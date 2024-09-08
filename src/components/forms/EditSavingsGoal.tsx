@@ -27,7 +27,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { AnimatedFormOpen } from "@/components/Animations/FormAnimation";
-import { DatePicker } from "../datepickers/DatePicker";
+import DatePicker from "../Datepickers/DatePicker";
 import { useToast } from "@/components/ui/use-toast";
 
 import { updateSavingsGoal } from "@/server/actions/update";
@@ -62,7 +62,7 @@ const EditSavingGoal = ({ savingsGoal }: SavingsGoalsProps) => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const { name, targetAmount, deadline, currentAmount } = values;
     await updateSavingsGoal({
-      id: savingsGoal.id!, 
+      id: savingsGoal.id!,
       name,
       targetAmount: parseFloat(targetAmount),
       deadline,
@@ -90,7 +90,10 @@ const EditSavingGoal = ({ savingsGoal }: SavingsGoalsProps) => {
         </DialogHeader>
 
         <Form {...form}>
-          <AnimatedFormOpen onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <AnimatedFormOpen
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-8"
+          >
             <FormField
               control={form.control}
               name="name"
