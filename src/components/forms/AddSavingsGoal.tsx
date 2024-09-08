@@ -25,7 +25,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { DatePicker } from "@/components/datepickers/DatePicker";
+import DatePicker from "@/components/Datepickers/DatePicker";
 import { AnimatedFormOpen } from "@/components/Animations/FormAnimation";
 import { useToast } from "@/components/ui/use-toast";
 
@@ -86,7 +86,10 @@ const AddSavingGoal = (props: SavingsGoalsProps) => {
         </DialogHeader>
 
         <Form {...form}>
-          <AnimatedFormOpen onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <AnimatedFormOpen
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-8"
+          >
             <FormField
               control={form.control}
               name="name"

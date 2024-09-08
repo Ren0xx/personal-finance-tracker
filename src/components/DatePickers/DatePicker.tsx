@@ -15,7 +15,7 @@ type DatePickerProps = {
   date: Date;
   onChange: () => void;
 };
-export function DatePicker(props: DatePickerProps) {
+export default function DatePicker(props: DatePickerProps) {
   const { date, onChange } = props;
 
   return (

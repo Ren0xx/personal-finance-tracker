@@ -11,13 +11,13 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-type DatePickerWithRangeProps ={
+type DatePickerWithRangeProps = {
   from: Date;
   to: Date;
   onChange: () => void;
-}
+};
 
-export const DatePickerWithRange = (props: DatePickerWithRangeProps) => {
+export default function DatePickerWithRange(props: DatePickerWithRangeProps) {
   const { from, to, onChange } = props;
   return (
     <Popover modal={true}>
@@ -59,4 +59,4 @@ export const DatePickerWithRange = (props: DatePickerWithRangeProps) => {
       </PopoverContent>
     </Popover>
   );
-};
+}

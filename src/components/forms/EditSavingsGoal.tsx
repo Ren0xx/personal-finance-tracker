@@ -27,7 +27,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { AnimatedFormOpen } from "@/components/Animations/FormAnimation";
-import { DatePicker } from "@/components/datepickers/DatePicker";
+import { DatePicker } from "../datepickers/DatePicker";
 import { useToast } from "@/components/ui/use-toast";
 
 import { updateSavingsGoal } from "@/server/actions/update";

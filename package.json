@@ -39,6 +39,7 @@
     "@trpc/server": "next",
     "@types/chart.js": "^2.9.41",
     "@types/react-chartjs-2": "^2.5.7",
+    "@types/react-datepicker": "^7.0.0",
     "@types/reactour": "^1.18.5",
     "chart.js": "^4.4.3",
     "class-variance-authority": "^0.7.0",
